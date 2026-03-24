@@ -2,7 +2,7 @@
   "name": "abisyntax",
   "displayName": "ABINIT Syntax Highlighting",
   "description": "Syntax highlighting and language support for ABINIT input and output files.",
-  "version": "1.0.9",
+  "version": "1.1.0",
   "publisher": "weizhengqing",
   "repository": {
     "type": "git",
@@ -19,7 +19,7 @@
       {
         "id": "abinit",
         "aliases": ["ABINIT", "abinit"],
-        "extensions": [".abi", ".in", ".inc"],
+        "extensions": [".abi", ".in", ".inc", ".xyz", ".vasp"],
         "configuration": "./language-configuration.json"
       },
       {
