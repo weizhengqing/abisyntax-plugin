@@ -1,0 +1,47 @@
+{
+  "name": "abinit",
+  "displayName": "ABINIT Syntax Highlighting",
+  "description": "Syntax highlighting and language support for ABINIT input and output files.",
+  "version": "1.0.5",
+  "publisher": "abinit-community",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/abinit/abinit.git"
+  },
+  "engines": {
+    "vscode": "^1.80.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "contributes": {
+    "languages": [
+      {
+        "id": "abinit",
+        "aliases": ["ABINIT", "abinit"],
+        "extensions": [".abi", ".in"],
+        "configuration": "./language-configuration.json"
+      },
+      {
+        "id": "abinit-output",
+        "aliases": ["ABINIT Output", "abinit-output"],
+        "extensions": [".abo", ".output", ".log", ".err"],
+        "filenames": ["DEN", "GSR"],
+        "filenamePatterns": ["*_EIG", "*_DDB", "*_DEN", "*_POT"],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "abinit",
+        "scopeName": "source.abinit",
+        "path": "./syntaxes/abinit.tmLanguage.json"
+      },
+      {
+        "language": "abinit-output",
+        "scopeName": "source.abinit-output",
+        "path": "./syntaxes/abinit-output.tmLanguage.json"
+      }
+    ]
+  }
+}

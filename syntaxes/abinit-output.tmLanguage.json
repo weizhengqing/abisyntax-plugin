@@ -1,0 +1,148 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "ABINIT Output",
+  "patterns": [
+    {
+      "include": "#output_blocks"
+    },
+    {
+      "include": "#comments"
+    },
+    {
+      "include": "#keywords"
+    },
+    {
+      "include": "#numbers"
+    },
+    {
+      "include": "#strings"
+    }
+  ],
+  "repository": {
+    "comments": {
+      "patterns": [
+        {
+          "name": "comment.line.number-sign.abinit",
+          "match": "#.*$"
+        },
+        {
+          "name": "comment.line.exclamation-mark.abinit",
+          "match": "!.*$"
+        }
+      ]
+    },
+    "keywords": {
+      "patterns": [
+        {
+          "name": "keyword.control.abinit",
+          "match": "(?i)\\b(a2fsmear@anaddb|abi|abinit|accuracy|acell|adpimd|adpimd_gamma|algalch|alloy@atdep|alphon@anaddb|amu|amu@atdep|analyze_anh_pot@multibinit|angdeg|angle@atdep|asr|asr@anaddb|atifc@anaddb|atndlist|atom@aim|atrad@aim|atvshift|autoparal|auxc_ixc|auxc_scal|awtr|band_gap@anaddb|bandpp|bdberry|bdeigrf|bdgw|berryopt|berrysav|berrystep|bfield|bmass|bmass@multibinit|born_charge@atdep|bound_anhastrain@multibinit|bound_cell@multibinit|bound_cutoff@multibinit|bound_factors@multibinit|bound_maxcoeff@multibinit|bound_model@multibinit|bound_option@multibinit|bound_penalty@multibinit|bound_rangepower@multibinit|bound_spcoupling@multibinit|bound_step@multibinit|bound_temp@multibinit|boxcenter|boxcutmin|brav|brav@anaddb|brav@atdep|broadening@optic|brvltt|bs_algorithm|bs_calctype|bs_coulomb_term|bs_coupling|bs_eh_cutoff|bs_exchange_term|bs_freq_mesh|bs_hayd_term|bs_haydock_niter|bs_haydock_tol|bs_interp_kmult|bs_interp_m3_width|bs_interp_method|bs_interp_mode|bs_interp_prep|bs_interp_rl_nb|bs_loband|bs_nstates|builtintest|bxctmindg|bzlength@atdep|bzpath@atdep|cd_customnimfrqs|cd_frqim_method|cd_full_grid|cd_halfway_freq|cd_imfrqs|cd_max_freq|cd_subset_freq|cellcharge|charge|chebfi_oracle|chempot|chkdilatmx|chkexit|chkparal|chkprim|chksymbreak|chksymtnons|chneut|chneut@anaddb|chrgat|cineb_start|coefficients@multibinit|coff1@aim|coff2@aim|constraint_kind|cprj_in_memory|cprj_update_lvl|cpuh|cpum|cpus|crit@aim|d3e_pert1_atpol|d3e_pert1_dir|d3e_pert1_elfd|d3e_pert1_phon|d3e_pert2_atpol|d3e_pert2_dir|d3e_pert2_elfd|d3e_pert2_phon|d3e_pert3_atpol|d3e_pert3_dir|d3e_pert3_elfd|d3e_pert3_phon|ddamp|ddb_filepath@anaddb|ddb_ngqpt|ddb_shiftq|ddk_filepath@anaddb|ddkfile@optic|debug_mode@atdep|delayperm|denout@aim|densfor_pred|densty|dfield|dfpt_sciss|diecut|dieflag@anaddb|diegap|dielam|dielec_constant@atdep|dielng|diemac|diemix|diemixmag|diismemory|dilatmx|dipdip|dipdip@anaddb|dipdip@multibinit|dipdip_prt@multibinit|dipdip_range@multibinit|dipquad|dipquad@anaddb|dltyp@aim|dmatpawu|dmatpuopt|dmatudiag|dmft_charge_prec|dmft_dc|dmft_entropy|dmft_fermi_step|dmft_iter|dmft_kspectralfunc|dmft_magnfield|dmft_magnfield_b|dmft_mxsf|dmft_nlambda|dmft_nominal|dmft_nwli|dmft_nwlo|dmft_occnd_imag|dmft_orbital|dmft_orbital_filepath|dmft_prt_maxent|dmft_prtself|dmft_prtwan|dmft_read_occnd|dmft_rslf|dmft_shiftself|dmft_solv|dmft_t2g|dmft_tolfreq|dmft_tollc|dmft_triqs_basis|dmft_triqs_compute_integral|dmft_triqs_det_init_size|dmft_triqs_det_n_operations_before_check|dmft_triqs_det_precision_error|dmft_triqs_det_precision_warning|dmft_triqs_det_singular_threshold|dmft_triqs_dlr_epsilon|dmft_triqs_dlr_wmax|dmft_triqs_entropy|dmft_triqs_gaussorder|dmft_triqs_imag_threshold|dmft_triqs_length_cycle|dmft_triqs_loc_n_max|dmft_triqs_loc_n_min|dmft_triqs_measure_density_matrix|dmft_triqs_measure_g_l|dmft_triqs_move_double|dmft_triqs_move_shift|dmft_triqs_n_cycles|dmft_triqs_n_iw|dmft_triqs_n_l|dmft_triqs_n_tau|dmft_triqs_n_warmup_cycles_init|dmft_triqs_n_warmup_cycles_restart|dmft_triqs_nsubdivisions|dmft_triqs_off_diag|dmft_triqs_pauli_prob|dmft_triqs_prt_entropy|dmft_triqs_random_seed_a|dmft_triqs_random_seed_b|dmft_triqs_read_ctqmcdata|dmft_triqs_shift_mu|dmft_triqs_time_invariance|dmft_triqs_tol_block|dmft_triqs_use_norm_as_weight|dmft_wanorthnorm|dmft_wanrad|dmft_x2my2d|dmft_yukawa_epsilon|dmft_yukawa_lambda|dmft_yukawa_param|dmftbandf|dmftbandi|dmftcheck|dmftctqmc_basis|dmftctqmc_chains|dmftctqmc_check|dmftctqmc_correl|dmftctqmc_gmove|dmftctqmc_grnns|dmftctqmc_localprop|dmftctqmc_meas|dmftctqmc_mov|dmftctqmc_mrka|dmftctqmc_order|dmftqmc_l|dmftqmc_n|dmftqmc_seed|dmftqmc_therm|domega@optic|dos_maxmode@anaddb|dosdeltae|dosdeltae@anaddb|dosdeltae@atdep|dossmear@anaddb|dossum@anaddb|dostol@anaddb|dpclim@aim|dtele|dtion|dtion@multibinit|dvdb_add_lr|dvdb_qdamp|dvdb_rspace_cell|dyn_chksym@multibinit|dyn_tolsym@multibinit|dynamics@multibinit|dynimage|ecut|ecuteps|ecutsigx|ecutsm|ecutwfn|effmass_free|efield|efield@multibinit|efield_background@multibinit|efield_gmean@multibinit|efield_gvel@multibinit|efield_lambda@multibinit|efield_period@multibinit|efield_phase@multibinit|efield_sigma@multibinit|efield_type@multibinit|efmas|efmas_bands|efmas_calc_dirs|efmas_deg|efmas_deg_tol|efmas_dim|efmas_dirs|efmas_n_dirs|efmas_ntheta|einterp|eivec@anaddb|elaflag@anaddb|elph2_imagden|elph_fermie@anaddb|elphflag@anaddb|elphsmear@anaddb|energy_reference@multibinit|enunit|enunit@anaddb|enunit@atdep|ep_b_max@anaddb|ep_b_min@anaddb|ep_extrael@anaddb|ep_int_gkk@anaddb|ep_keepbands@anaddb|ep_nqpt@anaddb|ep_nspline@anaddb|ep_prt_yambo@anaddb|ep_qptlist@anaddb|ep_scalprod@anaddb|eph_ahc_type|eph_doping|eph_ecutosc|eph_extrael|eph_fermie|eph_fix_korq|eph_fix_wavevec|eph_frohl_ntheta|eph_frohlichm|eph_fsewin|eph_fsmear|eph_intmeth|eph_mustar|eph_ngqpt_fine|eph_np_pqbks|eph_path_brange|eph_phrange|eph_phrange_w|eph_phwinfact|eph_prefix@anaddb|eph_prtscratew|eph_restart|eph_stern|eph_task|eph_tols_idelta|eph_transport|eph_use_ftinterp|eshift|esmear|exchmix|exchn2n3d|expert_user|extfpmd_nband|extfpmd_nbcut|extfpmd_nbdbuf|extrapwf|f4of2_sla|f6of2_sla|fband|fermie_nest|ffnl_lw|fft_count|fftalg|fftcache|fftgw|field_red|fit_anhastrain@multibinit|fit_bancoeff@multibinit|fit_coeff@multibinit|fit_cutoff@multibinit|fit_dispterms@multibinit|fit_efs@multibinit|fit_factors@multibinit|fit_fixcoeff@multibinit|fit_generatecoeff@multibinit|fit_iatom@multibinit|fit_imposecoeff@multibinit|fit_initializedata@multibinit|fit_max_nbody@multibinit|fit_nbancoeff@multibinit|fit_ncoeff@multibinit|fit_ncoeff_per_iatom@multibinit|fit_nfixcoeff@multibinit|fit_nimposecoeff@multibinit|fit_rangepower@multibinit|fit_spc_maxs@multibinit|fit_spcoupling@multibinit|fit_tolmsde@multibinit|fit_tolmsdf@multibinit|fit_tolmsdfs@multibinit|fit_tolmsds@multibinit|fit_weight_t@multibinit|flexoflag@anaddb|fock_icutcoul|fock_rcut|fockdownsampling|fockoptmix|foldep@aim|follow@aim|folstp@aim|freeze_displ@anaddb|freqim_alpha|freqremax|freqremin|freqspmax|freqspmin|friction|frictionbar|frmax@anaddb|frmin@anaddb|frzfermi|fxcartfactor|ga_algor|ga_fitness|ga_n_rules|ga_opt_percent|ga_rules|genafm|geoopt|get1den|get1wf|getabiwan|getabiwan_filepath|getbscoup|getbseig|getbsreso|getcell|getctqmcdata|getddb|getddb_filepath|getddk|getdelfd|getden|getden_filepath|getdkde|getdkdk|getdrhodb|getdrhodb_filepath|getdvdb|getdvdb_filepath|getefmas|getgam_eig2nkq|getgstore_filepath|getgwan|getgwan_filepath|gethaydock|getkden|getkerange_filepath|getocc|getpot_filepath|getqps|getscr|getscr_filepath|getself|getsigeph_filepath|getsuscep|getvel|getvpq|getvpq_filepath|getwfk|getwfk_filepath|getwfkfine|getwfkfine_filepath|getwfq|getwfq_filepath|getxcart|getxred|gkk_filepath@anaddb|gkqwrite@anaddb|goprecon|goprecprm|gpsurf@aim|gpu_devices|gpu_kokkos_nthrd|gpu_linalg_limit|gpu_nl_distrib|gpu_nl_splitsize|gpu_option|gpu_thread_limit|gruns_ddbs@anaddb|gruns_nddbs@anaddb|gstore_brange|gstore_erange|gstore_gname|gstore_kfilter|gstore_kzone|gstore_qzone|gstore_use_lgk|gstore_use_lgq|gstore_with_vk|gw1rdm|gw_customnfreqsp|gw_freqsp|gw_frqim_inzgrid|gw_frqre_inzgrid|gw_frqre_tangrid|gw_icutcoul|gw_invalid_freq|gw_nqlwl|gw_qlwl|gw_qprange|gw_rcut|gw_sigxcore|gwaclowrank|gwcalctyp|gwcomp|gwencomp|gwgamma|gwgmcorr|gwls_band_index|gwls_correlation|gwls_diel_model|gwls_exchange|gwls_first_seed|gwls_kmax_analytic|gwls_kmax_complement|gwls_kmax_numeric|gwls_kmax_poles|gwls_list_proj_freq|gwls_model_parameter|gwls_n_proj_freq|gwls_npt_gauss_quad|gwls_nseeds|gwls_print_debug|gwls_recycle|gwls_stern_kmax|gwmem|gwpara|gwpt_np_wpqbks|gwr_boxcutmin|gwr_chi_algo|gwr_fit|gwr_max_hwtene|gwr_np_kgts|gwr_nstep|gwr_ntau|gwr_rpa_ncut|gwr_sigma_algo|gwr_task|gwr_tolqpe|gwr_ucsc_batch|gwrpacorr|hmcsst|hmctt|hspinfield|hyb_mixing|hyb_mixing_sr|hyb_range_dft|hyb_range_fock|iatcon|iatfix|iatfix@anaddb|iatfixx|iatfixy|iatfixz|iatnd|iatprj_bs@anaddb|iatsph|iboxcut|ibte_abs_tol|ibte_alpha_mix|ibte_niter|ibte_prep|icoulomb|icutcoul|ieig2rf|ifcana@anaddb|ifcflag@anaddb|ifcout@anaddb|ifltransport@anaddb|imgmov|imgwfstor|include|inclvkb|indata_prefix|indata_prefix@atdep|inpt@aim|instrflag@anaddb|intxc|invovl_blksliced|iomode|ionmov|iprcel|iprcfc|iqpt|irandom|ird1den|ird1wf|irdbscoup|irdbseig|irdbsreso|irdchkprdm|irdddb|irdddk|irddelfd|irdden|irddkde|irddkdk|irddrhodb|irddvdb|irdefmas|irdhaydock|irdkden|irdqps|irdscr|irdsuscep|irdvdw|irdwfk|irdwfkfine|irdwfq|irho@aim|iscf|isecur|istatimg|istatr|istatshft|istrfix@anaddb|istwfk|ivalence|ivol@aim|ixc|ixc_sigma|ixcpositron|ixcrot|jdtset|jellslab|jfielddir|jpawu|kberry|kpt|kptbounds|kptgw|kptnrm|kptns|kptns_hf|kptopt|kptrlatt|kptrlatt@anaddb|kptrlatt_fine@anaddb|kptrlen|kssform|lambsig|lapout@aim|latt_anharm_pot_fname@multibinit|latt_friction@multibinit|latt_harm_pot_fname@multibinit|latt_pot_fname@multibinit|latt_taup@multibinit|latt_taut@multibinit|latt_test_set_fname@multibinit|latt_training_set_fname@multibinit|ldaminushalf|lexexch|lgrad2@aim|lgrad@aim|lin_comp@optic|linel_comp@optic|localrdwf|lotf_classic|lotf_nitex|lotf_nneigx|lotf_version|lpawu|lstep2@aim|lstep@aim|lw_flexo|lw_natopt|lw_qdrpl|lwf_anchor_ibands@anaddb|lwf_anchor_proj@anaddb|lwf_anchor_qpt@anaddb|lwf_constraint@multibinit|lwf_disentangle@anaddb|lwf_dt@multibinit|lwf_dynamics@multibinit|lwf_init_hist_fname@multibinit|lwf_init_state@multibinit|lwf_mu@anaddb|lwf_nctime@multibinit|lwf_ngqpt@anaddb|lwf_ntime@multibinit|lwf_nwann@anaddb|lwf_pot_fname@multibinit|lwf_projector@anaddb|lwf_sigma@anaddb|lwf_taut@multibinit|lwf_temperature_end@multibinit|lwf_temperature_nstep@multibinit|lwf_temperature_start@multibinit|lwf_var_temperature@multibinit|lwfflag@anaddb|macro_uj|magcon_lambda|magconon|max_ncpus|maxatd@aim|maxcpd@aim|maxestep|maxnsym|maxomega@optic|mband|mbpt_sciss|md_output@anaddb|mdeg_filter|mdf_epsinf|mdtemp|mdwall|mem_test|mep_mxstep|mep_solver|mgfft|mgfftdg|mixalch|mixesimgf|mixprec|moldyn|mpw|mqgrid|mqgriddg|multiplicity@atdep|mustar@anaddb|natcon|natfix|natfix@anaddb|natfixx|natfixy|natfixz|natifc@anaddb|natnd|natom|natom@atdep|natom_unitcell@atdep|natpawu|natprj_bs@anaddb|natrd|natsph|natsph_extra|natvshift|nband|nband_sum@optic|nbandhf|nbandkss|nbdblock|nbdbuf|nberry|nblock_lobpcg|nc_xccc_gspace|ncell@multibinit|ncellmat@multibinit|nchan@anaddb|ncoeff@multibinit|nconeq|ncout|nctime|nctime@multibinit|ndata|ndivk|ndivsm|ndivsm@anaddb|ndtset|ndynimage|neb_algo|neb_cell_algo|neb_spring|nefield@multibinit|nelect|nfft|nfftdg|nfreq@anaddb|nfreqim|nfreqim_conv|nfreqmidm|nfreqre|nfreqsp|ng2qpt@anaddb|ngfft|ngfftdg|ngkpt|ngqpt|ngqpt1@atdep|ngqpt2@atdep|ngqpt@anaddb|ngqpt@multibinit|ngrid@aim|ngrids@anaddb|nimage|nkpath|nkpt|nkptgw|nkpthf|nlflag@anaddb|nline|nloc_alg|nloc_mem|nnos|nnos@multibinit|nnsclo|nnsclohf|nobj|nomegasf|nomegasi|nomegasrd|nonlin_comp@optic|nonlinear_info|nonlop_ylm_count|normpawu|noseinert|np_slk|np_spkpt|npband|npfft|nph1l@anaddb|nph2l@anaddb|nphf|nphi@aim|npimage|npkpt|nppert|npsp|npspalch|npspinor|npulayit|npvel|npweps|npwkss|npwsigx|npwwfn|nqfd|nqpath@anaddb|nqpt|nqptdm|nqshft@anaddb|nqshft@multibinit|nsa@aim|nsb@aim|nsc@aim|nscforder|nshiftk|nshiftq|nspden|nsphere@anaddb|nspinor|nsppol|nstep|nstep_max@atdep|nstep_min@atdep|nstrfix@anaddb|nsym|ntemper@anaddb|ntheta@aim|ntime|ntime@multibinit|ntimimage|ntypalch|ntypat|ntypat@atdep|ntyppure|nucdipmom|nucefg|nucfc|num_lin_comp@optic|num_linel_comp@optic|num_nonlin_comp@optic|nwchan@anaddb|nwfshist|nzchempot|objaat|objaax|objan|objarf|objaro|objatr|objbat|objbax|objbn|objbrf|objbro|objbtr|occ|occopt|omegasimax|omegasrdmax|opt_coeff@multibinit|opt_effpot@multibinit|opt_factors@multibinit|opt_ncoeff@multibinit|optcell|optcell@multibinit|optdcmagpawu|optdriver|optforces|optnlxccc|optstress|oracle_factor|oracle_min_occ|orbmag|order@atdep|ortalg|outboltztrap@anaddb|outdata_prefix|outdata_prefix@anaddb|outdata_prefix@atdep|outdata_prefix@multibinit|output_file|output_file@anaddb|output_file@atdep|outscphon@anaddb|papiopt|paral_atom|paral_kgb|paral_rf|paw_add_core|pawcpxocc|pawcross|pawecutdg|pawfatbnd|pawlcutd|pawlmix|pawmixdg|pawnhatxc|pawnphi|pawntheta|pawnzlm|pawoptmix|pawoptosc|pawovlp|pawprt_b|pawprt_k|pawprtden|pawprtdos|pawprtvol|pawprtwf|pawspnorb|pawstgylm|pawsushat|pawujat|pawujrad|pawujv|pawusecp|pawxcdev|ph_intmeth|ph_ndivsm|ph_ngqpt|ph_nqpath|ph_nqshift|ph_qpath|ph_qshift|ph_smear|ph_wstep|phimax@aim|phimin@aim|piezoflag@anaddb|pimass|pimd_constraint|pitransform|plowan_bandf|plowan_bandi|plowan_compute|plowan_iatom|plowan_it|plowan_lcalc|plowan_natom|plowan_nbl|plowan_nt|plowan_projcalc|plowan_realspace|polcen|polflag@anaddb|posdoppler|positron|posnstep|posocc|postoldfe|postoldff|pp_dirpath|ppmfrq|ppmodel|prepalw|prepanl|prepgkk|prepscphon|prt1dm|prt_gf_csv@multibinit|prt_ifc@anaddb|prt_lorbmag|prt_model@multibinit|prtatlist|prtbbb|prtbltztrp|prtbltztrp@anaddb|prtchkprdm|prtcif|prtcurrent|prtddb|prtddb@anaddb|prtden|prtdensph|prtdipole|prtdos|prtdos@anaddb|prtdosm|prtebands|prtefmas|prteig|prtelf|prteliash|prtevk|prtfsurf|prtfsurf@anaddb|prtfull1wf|prtgden|prtgeo|prtgkk|prtgsr|prthist|prtkbff|prtkden|prtkpt|prtlden|prtlincompmatrixelements@optic|prtmbm@anaddb|prtnabla|prtnest|prtnest@anaddb|prtphbands|prtphbands@anaddb|prtphdos|prtphsurf|prtposcar|prtpot|prtprocar|prtpsps|prtspcur|prtsrlr@anaddb|prtstm|prtsuscep|prtvclmb|prtvdw|prtvha|prtvhxc|prtvol|prtvol@anaddb|prtvolimg|prtvpsp|prtvxc|prtwant|prtwf|prtwf_full|prtxml|pseudos|ptcharge|ptgroupma|pvelmax|pw_unbal_thresh|q1shft@anaddb|q2shft@anaddb|qgbt|qgbt_cart|qgrid_type@anaddb|qmass|qmass@multibinit|qpath@anaddb|qph1l@anaddb|qph2l@anaddb|qprtrb|qpt|qptdm|qptn|qptnrm|qptopt|qptrlatt|qrefine@anaddb|quadmom|quadquad|quadquad@anaddb|radstp@aim|ramansr@anaddb|random_atpos|randomseed@multibinit|ratmin@aim|ratsm|ratsph|ratsph_extra|rcut|rcut@atdep|readifc@atdep|recefermi|recgratio|recnpath|recnrec|recptrott|recrcut|rectesteg|rectolden|red_dfield|red_efield|red_efieldbar|relaxat@anaddb|relaxstr@anaddb|restartxf|restartxf@multibinit|rf2_dkde|rf2_dkdk|rf2_pert1_dir|rf2_pert2_dir|rfatpol|rfddk|rfdir|rfelfd|rfmagn|rfmeth|rfmeth@anaddb|rfphon|rfstrs|rfstrs_ref|rhoqpmix|rifcsph|rifcsph@anaddb|rmm_diis|rmm_diis_savemem|rprim|rprimd|rprimd@atdep|rsurdir@aim|rsurf@aim|scal@aim|scalecart|scissor@optic|scphon_supercell|scphon_temp|scr_wrange|sel_efs@multibinit|selectz@anaddb|shiftk|shiftq|sigma_bsum_range|sigma_erange|sigma_ngkpt|sigma_nshiftk|sigma_shiftk|signperm|slabwsrad|slabzbeg|slabzend|slc_coupling@multibinit|slc_pot_fname@multibinit|slice@atdep|slk_rankpp|smdelta|so_psp|spbroad|special_qpt@atdep|spgaxor|spgorig|spgroup|spgroupma|spin_calc_correlation_obs@multibinit|spin_calc_thermo_obs@multibinit|spin_calc_traj_obs@multibinit|spin_damping@multibinit|spin_dipdip@multibinit|spin_dt@multibinit|spin_dynamics@multibinit|spin_init_hist_fname@multibinit|spin_init_orientation@multibinit|spin_init_qpoint@multibinit|spin_init_rotate_axis@multibinit|spin_init_state@multibinit|spin_mag_field@multibinit|spin_nctime@multibinit|spin_ntime@multibinit|spin_ntime_pre@multibinit|spin_pot_fname@multibinit|spin_projection_qpoint@multibinit|spin_sia_add@multibinit|spin_sia_k1amp@multibinit|spin_sia_k1dir@multibinit|spin_temperature@multibinit|spin_temperature_end@multibinit|spin_temperature_nstep@multibinit|spin_temperature_start@multibinit|spin_var_temperature@multibinit|spin_write_traj@multibinit|spinat|spinmagntarget|spmeth|spnorbscl|stmbias|strfact|strfact@multibinit|string_algo|strprecon|strtarget|strtarget@multibinit|structure|supercell_latt|surf@aim|symafm|symchi|symdynmat|symdynmat@anaddb|symgkq@anaddb|symmorphi|symrel|symsigma|symv1scf|targetpol@anaddb|td_ef_ezero|td_ef_induced_vecpot|td_ef_pol|td_ef_type|td_ef_tzero|td_exp_order|td_maxene|td_mexcit|td_propagator|td_prtstr|td_restart|td_scnmax|td_scthr|telphint@anaddb|temperature@atdep|temperature@multibinit|temperinc@anaddb|tempermin@anaddb|test_effpot@multibinit|test_prt_ph@multibinit|tfkinfunc|tfw_toldfe|thermal_supercell@anaddb|thetamax@aim|thetamin@aim|thmflag@anaddb|thmtol@anaddb|tim1rev|timopt|tl_nprccg|tl_radius|tmesh|tmpdata_prefix|tnons|together@atdep|tolcum|toldfe|toldff|toldmag|tolerance@optic|tolimg|tolinbox@atdep|tolmatch@atdep|tolmotif@atdep|tolmxde|tolmxf|tolmxf@multibinit|tolrde|tolrff|tolsym|tolvrs|tolwfr|tolwfr_diago|tphysel|transport_ngkpt|ts_option@multibinit|tsmear|typat|typat@atdep|typat_unitcell@atdep|ucrpa|ucrpa_bands|ucrpa_window|udtset|upawu|use_gbt|use_gemm_nonlop|use_ideal_positions@atdep|use_k_fine@anaddb|use_nonscf_gkk|use_oldchi|use_slk|use_weights@atdep|usedmatpu|usedmft|useexexch|useextfpmd|usefock|usekden|usepaw|usepawu|usepead|usepotzero|userec|useria|userib|useric|userid|userie|userra|userrb|userrc|userrd|userre|usewvl|usexcnhat|useylm|vaclst|vacnum|vacuum|vacwidth|vcutgeo|vdw_df_acutmin|vdw_df_aratio|vdw_df_damax|vdw_df_damin|vdw_df_dcut|vdw_df_dratio|vdw_df_dsoft|vdw_df_gcut|vdw_df_ndpts|vdw_df_ngpts|vdw_df_nqpts|vdw_df_nrpts|vdw_df_nsmooth|vdw_df_phisoft|vdw_df_qcut|vdw_df_qratio|vdw_df_rcut|vdw_df_rsoft|vdw_df_threshold|vdw_df_tolerance|vdw_df_tweaks|vdw_df_zab|vdw_nfrag|vdw_supercell|vdw_tol|vdw_tol_3bt|vdw_typfrag|vdw_xc|vel|vel_cell|vis|vloc_rcut|vpq_aseed|vpq_avg_g|vpq_gpr_energy|vpq_gpr_length|vpq_interp|vpq_mesh_fact|vpq_mix_fact|vpq_nstates|vpq_nstep|vpq_nstep_ort|vpq_pkind|vpq_select|vpq_tolgrs|vpq_translate|vpq_trvec|vprtrb|vpts@aim|vs_qrad_tolkms@anaddb|w90iniprj|w90prtunk|wfinit|wfk_task|wfkfile@optic|wfmix|wfoptalg|write_files|wtatcon|wtk|wtq|wvl_bigdft_comp|wvl_crmult|wvl_frmult|wvl_hgrid|wvl_ngauss|wvl_nprccg|x1rdm|xc_denpos|xc_taupos|xc_tb09_c|xcart|xclevel|xg_nonlop_option|xred|xred_unitcell@atdep|xredsph_extra|xyzfile|zcut|zeemanfield|ziontypat|znucl|znucl@atdep|zora)[0-9]*\\b(?=\\s*[:=]?\\s*[-\\+0-9'\"\\.])"
+        }
+      ]
+    },
+    "numbers": {
+      "patterns": [
+        {
+          "name": "constant.numeric.abinit",
+          "match": "\\b([-\\+]?[0-9]*\\.?[0-9]+([dDeE][-\\+]?[0-9]+)?)\\b"
+        }
+      ]
+    },
+    "strings": {
+      "patterns": [
+        {
+          "name": "string.quoted.double.abinit",
+          "begin": "\"",
+          "end": "\"",
+          "patterns": [
+            {
+              "name": "constant.character.escape.abinit",
+              "match": "\\\\."
+            }
+          ]
+        },
+        {
+          "name": "string.quoted.single.abinit",
+          "begin": "'",
+          "end": "'",
+          "patterns": [
+            {
+              "name": "constant.character.escape.abinit",
+              "match": "\\\\."
+            }
+          ]
+        }
+      ]
+    },
+    "output_blocks": {
+      "patterns": [
+        {
+          "name": "markup.underline.link.abinit",
+          "match": "\\b(https?://\\S+)\\b"
+        },
+        {
+          "name": "string.unquoted.filepath.abinit",
+          "match": "(?<=-> |file |is |xyzfile )([/~\\.]\\S+|\\w+\\.\\w+)"
+        },
+        {
+          "name": "comment.line.banner.abinit",
+          "match": "^\\s*(?:={10,}|-{10,}|\\+{10,})\\s*$"
+        },
+        {
+          "name": "entity.name.section.abinit",
+          "match": "^\\s*===\\s+.*\\s*$"
+        },
+        {
+          "name": "entity.name.section.abinit",
+          "match": "^\\s*---\\s+[A-Z].*\\s*$"
+        },
+        {
+          "name": "comment.line.dot.abinit",
+          "match": "^\\..*$"
+        },
+        {
+          "name": "string.unquoted.list.abinit",
+          "match": "^-\\s+.*$"
+        },
+        {
+          "name": "string.unquoted.welcome.abinit",
+          "match": "^\\s+(ABINIT comes with|It is free software|under certain conditions|see ~abinit|ABINIT is a project|Corning Inc|Please read|acknowledgments|For more information).*$"
+        },
+        {
+          "match": "^\\s+([A-Za-z0-9_\\+\\-\\s]+?)\\s*(:)\\s*(.*)$",
+          "captures": {
+            "1": {
+              "name": "entity.name.tag.abinit"
+            },
+            "2": {
+              "name": "punctuation.separator.key-value.abinit"
+            },
+            "3": {
+              "name": "string.unquoted.value.abinit"
+            }
+          }
+        },
+        {
+          "name": "keyword.other.yaml.abinit",
+          "match": "^--- !.*|^\\.\\.\\.$"
+        },
+        {
+          "name": "entity.name.tag.yaml.abinit",
+          "match": "\\b([a-zA-Z_]+)(?=\\s*:)"
+        },
+        {
+          "name": "invalid.illegal.abinit",
+          "match": "\\b(ERROR|BUG|WARNING|FATAL)\\b"
+        },
+        {
+          "name": "entity.name.type.abinit",
+          "match": "\\b(DATASET\\s+[0-9]+)\\b"
+        },
+        {
+          "name": "keyword.control.output.abinit",
+          "match": "(?i)\\b(kpt#|nband=|wtk=|kpt=|iter|Etot|deltaE|residm|nres2)\\b"
+        }
+      ]
+    }
+  },
+  "scopeName": "source.abinit-output"
+}
