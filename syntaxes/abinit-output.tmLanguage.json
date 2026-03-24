@@ -3,6 +3,9 @@
   "name": "ABINIT Output",
   "patterns": [
     {
+      "include": "#filepaths"
+    },
+    {
       "include": "#units"
     },
     {
@@ -151,6 +154,21 @@
         {
           "name": "keyword.other.unit.abinit",
           "match": "(?i)\\b(Bohr|Bohrs|eV|Hartree|Ry|Rydberg|Ha|K|Angstrom|angdeg|cm-1|GPa|meV|THz|au)\\b"
+        }
+      ]
+    },
+    "filepaths": {
+      "patterns": [
+        {
+          "match": "(?i)\\b(xyzfile|\\w+_prefix|\\w+_filepath)\\s+([^\\s]+)",
+          "captures": {
+            "1": {
+              "name": "keyword.control.abinit"
+            },
+            "2": {
+              "name": "string.unquoted.filepath.abinit"
+            }
+          }
         }
       ]
     }
