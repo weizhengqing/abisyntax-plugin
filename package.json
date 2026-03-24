@@ -2,7 +2,7 @@
   "name": "abisyntax",
   "displayName": "ABINIT Syntax Highlighting",
   "description": "Syntax highlighting and language support for ABINIT input and output files.",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "publisher": "weizhengqing",
   "repository": {
     "type": "git",
@@ -18,16 +18,63 @@
     "languages": [
       {
         "id": "abinit",
-        "aliases": ["ABINIT", "abinit"],
-        "extensions": [".abi", ".in", ".inc", ".xyz", ".vasp"],
+        "aliases": [
+          "ABINIT",
+          "abinit"
+        ],
+        "extensions": [
+          ".abi",
+          ".in",
+          ".inc"
+        ],
         "configuration": "./language-configuration.json"
       },
       {
         "id": "abinit-output",
-        "aliases": ["ABINIT Output", "abinit-output"],
-        "extensions": [".abo", ".output", ".log", ".err"],
-        "filenames": ["DEN", "GSR"],
-        "filenamePatterns": ["*_EIG", "*_DDB", "*_DEN", "*_POT"],
+        "aliases": [
+          "ABINIT Output",
+          "abinit-output"
+        ],
+        "extensions": [
+          ".abo",
+          ".output",
+          ".log",
+          ".err"
+        ],
+        "filenames": [
+          "DEN",
+          "GSR"
+        ],
+        "filenamePatterns": [
+          "*_EIG",
+          "*_DDB",
+          "*_DEN",
+          "*_POT"
+        ],
+        "configuration": "./language-configuration.json"
+      },
+      {
+        "id": "abinit-xyz",
+        "aliases": [
+          "ABINIT XYZ",
+          "xyz"
+        ],
+        "extensions": [
+          ".xyz"
+        ],
+        "configuration": "./language-configuration.json"
+      },
+      {
+        "id": "abinit-vasp",
+        "aliases": [
+          "ABINIT VASP",
+          "vasp"
+        ],
+        "extensions": [
+          ".vasp",
+          "POSCAR",
+          "CONTCAR"
+        ],
         "configuration": "./language-configuration.json"
       }
     ],
@@ -41,6 +88,16 @@
         "language": "abinit-output",
         "scopeName": "source.abinit-output",
         "path": "./syntaxes/abinit-output.tmLanguage.json"
+      },
+      {
+        "language": "abinit-xyz",
+        "scopeName": "source.xyz",
+        "path": "./syntaxes/abinit-xyz.tmLanguage.json"
+      },
+      {
+        "language": "abinit-vasp",
+        "scopeName": "source.vasp",
+        "path": "./syntaxes/abinit-vasp.tmLanguage.json"
       }
     ]
   }

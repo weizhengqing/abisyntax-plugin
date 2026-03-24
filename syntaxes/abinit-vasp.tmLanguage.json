@@ -1,0 +1,46 @@
+{
+  "name": "VASP POSCAR",
+  "scopeName": "source.vasp",
+  "patterns": [
+    {
+      "match": "^\\s*([A-Za-z]{1,3})\\s+([-\\+\\.0-9eE]+)\\s+([-\\+\\.0-9eE]+)\\s+([-\\+\\.0-9eE]+)(?:\\s+(.*))?$",
+      "captures": {
+        "1": {
+          "name": "entity.name.tag.element.vasp"
+        },
+        "2": {
+          "name": "constant.numeric.x.vasp"
+        },
+        "3": {
+          "name": "constant.numeric.y.vasp"
+        },
+        "4": {
+          "name": "constant.numeric.z.vasp"
+        },
+        "5": {
+          "name": "comment.line.vasp"
+        }
+      }
+    },
+    {
+      "name": "constant.numeric.vector.vasp",
+      "match": "^\\s*([-\\+\\.0-9eE]+)\\s+([-\\+\\.0-9eE]+)\\s+([-\\+\\.0-9eE]+)\\s*$"
+    },
+    {
+      "name": "keyword.control.vasp",
+      "match": "(?i)^[ \\t]*(Direct|Cartesian|Selective dynamics)[ \\t]*$"
+    },
+    {
+      "name": "entity.name.type.vasp",
+      "match": "^[ \\t]*[A-Za-z]+(?:[ \\t]+[A-Za-z]+)*[ \\t]*$"
+    },
+    {
+      "name": "constant.numeric.vasp",
+      "match": "\\b([-\\+]?[0-9]*\\.?[0-9]+([eE][-\\+]?[0-9]+)?)\\b"
+    },
+    {
+      "name": "comment.line.vasp",
+      "match": "^.+$"
+    }
+  ]
+}

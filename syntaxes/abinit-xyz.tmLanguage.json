@@ -1,0 +1,34 @@
+{
+  "name": "XYZ Structure",
+  "scopeName": "source.xyz",
+  "patterns": [
+    {
+      "name": "constant.numeric.natom.xyz",
+      "match": "^\\s*[0-9]+\\s*$"
+    },
+    {
+      "match": "^\\s*([A-Za-z]{1,3})\\s+([-\\+\\.0-9eE]+)\\s+([-\\+\\.0-9eE]+)\\s+([-\\+\\.0-9eE]+)(?:\\s+(.*))?$",
+      "captures": {
+        "1": {
+          "name": "entity.name.tag.element.xyz"
+        },
+        "2": {
+          "name": "constant.numeric.x.xyz"
+        },
+        "3": {
+          "name": "constant.numeric.y.xyz"
+        },
+        "4": {
+          "name": "constant.numeric.z.xyz"
+        },
+        "5": {
+          "name": "comment.line.xyz"
+        }
+      }
+    },
+    {
+      "name": "comment.line.xyz",
+      "match": "^.+$"
+    }
+  ]
+}
