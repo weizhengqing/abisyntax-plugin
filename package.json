@@ -6,7 +6,7 @@
   "publisher": "weizhengqing",
   "repository": {
     "type": "git",
-    "url": "https://github.com/abinit/abinit.git"
+    "url": "https://github.com/weizhengqing/abisyntax-plugin"
   },
   "engines": {
     "vscode": "^1.80.0"
