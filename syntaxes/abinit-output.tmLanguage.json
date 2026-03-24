@@ -3,6 +3,9 @@
   "name": "ABINIT Output",
   "patterns": [
     {
+      "include": "#units"
+    },
+    {
       "include": "#output_blocks"
     },
     {
@@ -140,6 +143,14 @@
         {
           "name": "keyword.control.output.abinit",
           "match": "(?i)\\b(kpt#|nband=|wtk=|kpt=|iter|Etot|deltaE|residm|nres2)\\b"
+        }
+      ]
+    },
+    "units": {
+      "patterns": [
+        {
+          "name": "keyword.other.unit.abinit",
+          "match": "(?i)\\b(Bohr|Bohrs|eV|Hartree|Ry|Rydberg|Ha|K|Angstrom|angdeg|cm-1|GPa|meV|THz|au)\\b"
         }
       ]
     }

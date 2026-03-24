@@ -3,6 +3,9 @@
   "name": "ABINIT",
   "patterns": [
     {
+      "include": "#units"
+    },
+    {
       "include": "#comments"
     },
     {
@@ -67,6 +70,14 @@
               "match": "\\\\."
             }
           ]
+        }
+      ]
+    },
+    "units": {
+      "patterns": [
+        {
+          "name": "keyword.other.unit.abinit",
+          "match": "(?i)\\b(Bohr|Bohrs|eV|Hartree|Ry|Rydberg|Ha|K|Angstrom|angdeg|cm-1|GPa|meV|THz|au)\\b"
         }
       ]
     }
