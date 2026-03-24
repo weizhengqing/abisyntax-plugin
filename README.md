@@ -19,7 +19,7 @@ This extension provides specialized syntax highlighting tailored for the differe
 
 ## Installation
 
-1. Visit the [Releases Page](https://github.com/weizhengqing/abinit-vscode/releases).
+1. Visit the [Releases Page](https://github.com/weizhengqing/abisyntax-plugin/releases).
 2. Download the latest `abinit-X.X.X.vsix` package.
 3. Open VS Code and go to the **Extensions** view (`Ctrl+Shift+X` or `Cmd+Shift+X`).
 4. Click on the `...` menu in the top right corner and select **"Install from VSIX..."**.
@@ -28,4 +28,4 @@ This extension provides specialized syntax highlighting tailored for the differe
 ## Repository
 
 Source code and issue tracking are hosted on GitHub:
-[https://github.com/weizhengqing/abinit-vscode](https://github.com/weizhengqing/abinit-vscode)
+[https://github.com/weizhengqing/abisyntax-plugin](https://github.com/weizhengqing/abisyntax-plugin)
