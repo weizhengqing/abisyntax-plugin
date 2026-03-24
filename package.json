@@ -2,8 +2,8 @@
   "name": "abisyntax",
   "displayName": "ABINIT Syntax Highlighting",
   "description": "Syntax highlighting and language support for ABINIT input and output files.",
-  "version": "1.0.7",
-  "publisher": "abinit-community",
+  "version": "1.0.8",
+  "publisher": "weizhengqing",
   "repository": {
     "type": "git",
     "url": "https://github.com/abinit/abinit.git"
