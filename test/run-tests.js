@@ -168,6 +168,7 @@ async function testOutputGrammar() {
   const U = 'keyword.other.unit';
   const S = 'string';
   const H = 'markup.heading';
+  const C = 'comment';
 
   expectLine(g, '            acell      9.3761834869E+00  1.0826684213E+01  8.3211636133E+01 Bohr',
     { acell: V, '9.3761834869E+00': N, Bohr: U });
@@ -190,17 +191,21 @@ async function testOutputGrammar() {
     { pspini: P, '/home/u/pseudo/Al.psp8': S });
   expectLine(g, '- input  file    -> run.abi', { 'run.abi': S });
   expectLine(g, '- --> not optimal distribution: autoparal keyword recommended in input file <--',
-    { not: null });
+    { not: C, autoparal: V });
   expectLine(g, ' kpt#   1, nband= 82, wtk=  0.05556, kpt=  0.0833  0.0833  0.2500 (reduced coord)',
-    { 'kpt#': null, nband: V, wtk: V, '0.05556': N });
+    { 'kpt#': P, nband: V, wtk: V, '0.05556': N, reduced: C });
   expectLine(g, '  sigma(1 1)=  2.58072324E-05  sigma(3 2)=  0.00000000E+00', { sigma: P, '2.58072324E-05': N });
   expectLine(g, ' Fermi (or HOMO) energy (hartree) =  -0.01384', { energy: P, hartree: U });
   expectLine(g, ' Unit cell volume ucvol=  8.4470610E+03 bohr^3', { ucvol: P, 'bohr^3': U });
   expectLine(g, '.Version 9.10.3 of ABINIT', { '9.10.3': 'constant.numeric.version' });
-  expectLine(g, '- Al    ONCVPSP-3.2.3.1  r_core=   1.76802', { '3.2.3.1': 'constant.numeric.version', r_core: P });
-  expectLine(g, '.Starting date : Thu 16 Apr 2026.', { 'Starting date': P, 2026: N });
+  expectLine(g, '- Al    ONCVPSP-3.2.3.1  r_core=   1.76802',
+    { Al: 'constant.language.element', ONCVPSP: P, '3.2.3.1': 'constant.numeric.version', r_core: P });
+  expectLine(g, '.Starting date : Thu 16 Apr 2026.', { 'Starting date': P, 'Thu 16 Apr 2026': 'constant.numeric.date' });
+  expectLine(g, '- ( at 13h58 )', { at: C, '13h58': 'constant.numeric.time' });
+  expectLine(g, '- of this version of ABINIT, namely Jul 2023.', { version: C, 'Jul 2023': 'constant.numeric.date' });
+  expectLine(g, 'Starting date: Thu Apr 16 13:58:21 2026', { 'Thu Apr 16 13:58:21 2026': 'constant.numeric.date' });
   expectLine(g, '  for the second time, diff in etot=  2.933E-10 < toldfe=  1.000E-09',
-    { second: null, etot: P, toldfe: V });
+    { second: C, 'diff in': P, etot: P, toldfe: V });
   expectLine(g, ' Please read https://docs.abinit.org/theory/acknowledgments for suggested',
     { 'https://docs.abinit.org/theory/acknowledgments': 'markup.underline.link' });
   expectLine(g, ' Calculation completed.', { 'Calculation completed.': 'markup.inserted' });
@@ -213,12 +218,53 @@ async function testOutputGrammar() {
   expectLine(g, '   FFT mesh divisions ........................    54   64  480',
     { 'FFT mesh divisions': P, 54: N });
   expectLine(g, '                 HAVE_DFTI HAVE_FC_ALLOCATABLE_DT...             HAVE_FC_ASYNC',
-    { HAVE_DFTI: null });
+    { HAVE_DFTI: C });
   expectLine(g, ' **** DERIVATIVE DATABASE ****', { 'DERIVATIVE DATABASE': H });
   expectLine(g, '     acell  0.93761834869000D+01  0.10826684213000D+02', { acell: V, '0.93761834869000D+01': N });
   expectLine(g, '# Fermi energy :      -0.01675397', { '# Fermi energy :      -0.01675397': 'comment' });
   expectLine(g, ' dataset: 1 , wall: 09:17:14 [hours] , cpu: 09:15:14 [hours] <<< TIME',
     { '09:17:14': 'constant.numeric.time', hours: U });
+
+  // free text, titles and labels
+  expectLine(g, ' chkinp: Checking input parameters for consistency.', { chkinp: P, 'Checking': C, consistency: C });
+  expectLine(g, ' ABINIT comes with ABSOLUTELY NO WARRANTY.', { ABINIT: C, WARRANTY: C });
+  expectLine(g, ' Exchange-correlation functional for the present dataset will be:',
+    { 'Exchange-correlation functional for the present dataset will be:': H });
+  expectLine(g, ' For the susceptibility and dielectric matrices, or tddft :', { 'For the susceptibility and dielectric matrices, or tddft': H });
+  expectLine(g, ' Values of the parameters that define the memory need of the present run', { 'Values of the parameters that define the memory need of the present run': H });
+  expectLine(g, ' Cartesian coordinates (xcart) [bohr]', { 'Cartesian coordinates': H, xcart: V, bohr: U });
+  expectLine(g, ' Gradient of E wrt nuclear positions in reduced coordinates (gred)', { 'Gradient of E wrt nuclear positions in reduced coordinates': H, gred: H });
+  expectLine(g, ' cartesian forces (hartree/bohr) at end:', { 'cartesian forces': H, 'at end:': H });
+  expectLine(g, ' Cartesian forces (fcart) [Ha/bohr]; max,rms= 1.67155E-02 4.43627E-03 (free atoms)',
+    { 'Cartesian forces': H, 'max,rms': P, free: C });
+  expectLine(g, ' Atom  Sphere_radius  Integrated_density', { ' Atom  Sphere_radius  Integrated_density': H });
+  expectLine(g, '  CALCULATING BADER CHARGE DISTRIBUTION', { 'CALCULATING BADER CHARGE DISTRIBUTION': H });
+  expectLine(g, ' Unit cell volume ucvol=  8.4470610E+03 bohr^3', { 'Unit cell volume': P });
+  expectLine(g, ' Total energy (etotal) [Ha]= -7.06936175340786E+01', { 'Total energy': P, etotal: P, Ha: U });
+  expectLine(g, ' Fermi (or HOMO) energy (eV) =  -0.37670   Average Vxc (eV)=  -4.20868',
+    { Fermi: P, 'or HOMO': P, Average: P, Vxc: P, eV: U });
+  expectLine(g, ' Mean square residual over all n,k,spin=   13.155E-10; max=  67.721E-08',
+    { 'Mean square residual over all': P, max: P });
+  expectLine(g, '_ WF disk file :   2273.370 Mbytes ; DEN or POT disk file :     12.658 Mbytes.',
+    { 'WF disk file': P, 'DEN or POT disk file': P, Mbytes: U });
+  expectLine(g, '-   mpi_nproc: 16, omp_nthreads: 1 (-1 if OMP is not activated)',
+    { mpi_nproc: P, omp_nthreads: P, activated: C });
+  expectLine(g, ' - 13.00000   3.00000    170504                znucl, zion, pspdat',
+    { znucl: V, ', zion, pspdat': P });
+  expectLine(g, '    1.04361700E+04                                ecore*ucvol(ha*bohr**3)', { 'ecore*ucvol': P, ha: U });
+  expectLine(g, '          ecut(hartree)=     39.675   => boxcut(ratio)=   2.03116', { boxcut: P, ratio: P });
+  expectLine(g, ' Symmetries : space group Pm (#  6); Bravais mP (primitive monocl.)',
+    { Symmetries: P, Pm: 'constant.language.symmetry', mP: 'constant.language.symmetry', primitive: C });
+  expectLine(g, '  OpenMP support : yes', { 'OpenMP support': P, yes: 'constant.language' });
+  expectLine(g, '  GPU support    : ', { 'GPU support': P });
+  expectLine(g, ' At SCF step   16, etot is converged : ', { 'is converged': 'markup.inserted', 16: N });
+  expectLine(g, '     tolsym is bigger than 1.0e-8, decrease tolsym', { tolsym: V, bigger: C });
+  // variables that are English words are not highlighted in sentences
+  expectLine(g, '    In order to avoid spurious effects, the atomic coordinates have been', { order: C, atomic: C });
+  expectLine(g, '    md5  : 57224185a50eb565dff7432e4aa35376', { '57224185a50eb565dff7432e4aa35376': 'constant.numeric.hash' });
+  expectLine(g, 'P This job should need less than   979.021 Mbytes of memory.', { This: C, P: null, '979.021': N });
+  expectLine(g, ' (those specified in the GNU General Public License, http://www.gnu.org/copyleft/gpl.txt).',
+    { 'http://www.gnu.org/copyleft/gpl.txt': 'string', '(': 'punctuation.section.brackets' });
 
   // YAML documents
   const doc = ['--- !ResultsGS'];
@@ -227,6 +273,8 @@ async function testOutputGrammar() {
   expectLine(g, 'dimensions: {natom: 29, nkpt: 18, dtset: 1, }', { dimensions: P, natom: V, dtset: P, 29: N }, doc);
   expectLine(g, 'convergence: {deltae: -2.933E-10, diffor: null, }', { null: 'constant.language' }, doc);
   expectLine(g, "'-kT*entropy'       : -1.57710899060653E-01", { "'-kT*entropy'": P }, doc);
+  expectLine(g, '- [ -1.9086E-08,  -1.0530E-11,   3.1929E-01, Al]', { Al: 'constant.language.element' }, doc);
+  expectLine(g, 'comment   : Summary of ground state results', { comment: P, Summary: C }, doc);
   expectLine(g, 'lattice_angles: [ 90.000,  90.000,  90.000, ] # degrees, (23, 13, 12)',
     { '# degrees, (23, 13, 12)': 'comment' }, doc);
   expectLine(g, '...', { '...': 'comment' }, doc);
@@ -234,7 +282,7 @@ async function testOutputGrammar() {
   expectLine(g, '--- !ERROR', { ERROR: 'invalid.illegal' });
   const warn = ['--- !WARNING', 'src_file: m_mpinfo.F90', 'src_line: 83', 'message: |'];
   expectLine(g, '    nkpt*nsppol (18) is not a multiple of nproc_spkpt (16)', { 18: N }, warn);
-  expectLine(g, '    The k-point parallelisation is INEFFICIENT: 1', { 'The k-point parallelisation is INEFFICIENT': null }, warn);
+  expectLine(g, '    The k-point parallelisation is INEFFICIENT: 1', { The: C, parallelisation: C, INEFFICIENT: C }, warn);
   expectLine(g, ' ETOT  3  -70.7', { ETOT: V }, [...warn, '    text', '...']);
 }
 
@@ -284,6 +332,10 @@ async function testExamples() {
         const scopes = t.scopes.slice(1);
         if (scope === 'source.abinit' && t.text.trim() &&
             scopes.every((s) => s.startsWith('meta.') || s.startsWith('punctuation.'))) {
+          if (problems++ < 5) fail(`${rel}:${i + 1} not highlighted: "${t.text}"`);
+        }
+        // output files: every word gets a colour (title, name, value or free text)
+        if (scope === 'source.abinit-output' && /[A-Za-z]{2}/.test(t.text) && plain(t.scopes)) {
           if (problems++ < 5) fail(`${rel}:${i + 1} not highlighted: "${t.text}"`);
         }
         if (scope !== 'source.abinit' && scopes.some((s) => s.startsWith('invalid')) &&

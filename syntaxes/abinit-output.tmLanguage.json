@@ -8,6 +8,9 @@
       "include": "#yaml-document"
     },
     {
+      "include": "#number-row"
+    },
+    {
       "include": "#line-comment"
     },
     {
@@ -17,16 +20,22 @@
       "include": "#heading"
     },
     {
+      "include": "#title"
+    },
+    {
       "include": "#variable-echo"
     },
     {
       "include": "#dotted-label"
     },
     {
+      "include": "#config-label"
+    },
+    {
       "include": "#label"
     },
     {
-      "include": "#inline"
+      "include": "#text"
     }
   ],
   "repository": {
@@ -57,6 +66,10 @@
         }
       }
     },
+    "number-row": {
+      "match": "^\\s*(?:[-+]?(?:\\d+\\.\\d+(?:[eEdD][-+]?\\d+)?|\\.\\d+(?:[eEdD][-+]?\\d+)?|\\d+[eEdD][-+]?\\d+)|[-+]?\\d+)(?:\\s+(?:[-+]?(?:\\d+\\.\\d+(?:[eEdD][-+]?\\d+)?|\\.\\d+(?:[eEdD][-+]?\\d+)?|\\d+[eEdD][-+]?\\d+)|[-+]?\\d+))*\\s*$",
+      "name": "constant.numeric.row.abinit"
+    },
     "line-comment": {
       "match": "^\\s*#.*$",
       "name": "comment.line.number-sign.abinit"
@@ -77,7 +90,7 @@
               "name": "markup.heading.abinit",
               "patterns": [
                 {
-                  "include": "#inline"
+                  "include": "#heading-content"
                 }
               ]
             },
@@ -122,6 +135,82 @@
         {
           "match": "^\\s*iter\\s+Etot\\(hartree\\).*$",
           "name": "markup.heading.table.abinit"
+        },
+        {
+          "match": "^\\s*Atom\\s+Sphere_radius\\s+Integrated_density\\s*$",
+          "name": "markup.heading.table.abinit"
+        }
+      ]
+    },
+    "title": {
+      "patterns": [
+        {
+          "match": "^[-.P_+)\\s]?\\s*([A-Za-z][^:\\n]*?[^\\s:])\\s?(:)\\s*$",
+          "captures": {
+            "1": {
+              "name": "markup.heading.subsection.abinit",
+              "patterns": [
+                {
+                  "include": "#heading-content"
+                }
+              ]
+            },
+            "2": {
+              "name": "markup.heading.subsection.abinit"
+            }
+          }
+        },
+        {
+          "match": "^[-\\s]\\s?([A-Z][\\w-]*(?: [\\w#-]+)*)((?:\\s*(?:\\([^()\\n]*\\)|\\[[^\\[\\]\\n]*\\]))+)\\s*(?:(;)(.*))?$",
+          "captures": {
+            "1": {
+              "name": "markup.heading.subsection.abinit",
+              "patterns": [
+                {
+                  "include": "#heading-content"
+                }
+              ]
+            },
+            "2": {
+              "name": "markup.heading.subsection.abinit",
+              "patterns": [
+                {
+                  "include": "#heading-content"
+                }
+              ]
+            },
+            "3": {
+              "name": "punctuation.separator.abinit"
+            },
+            "4": {
+              "patterns": [
+                {
+                  "include": "#text"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "match": "^\\s*(Values of the parameters that define the memory need of the present run|Suggested references for the acknowledgment of ABINIT usage\\.|(?:[Rr]educed|[Cc]artesian) coordinates \\(array \\w+\\) for\\s+\\d+ atoms|occupation numbers for kpt#\\s+\\d+)\\s*$",
+          "captures": {
+            "1": {
+              "name": "markup.heading.subsection.abinit",
+              "patterns": [
+                {
+                  "include": "#heading-content"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "match": "^\\s*([A-Z][A-Z0-9-]+(?: +[A-Z][A-Z0-9()/-]*)+ *[:!]?)\\s*$",
+          "captures": {
+            "1": {
+              "name": "markup.heading.subsection.abinit"
+            }
+          }
         }
       ]
     },
@@ -144,6 +233,20 @@
         },
         "2": {
           "name": "punctuation.separator.leader.abinit"
+        }
+      }
+    },
+    "config-label": {
+      "match": "^\\s*([A-Za-z][\\w .()/+'-]{0,50}?)\\s*(:)\\s*(?:(yes|no|auto|none|enabled|disabled|ON|OFF)\\s*)?$",
+      "captures": {
+        "1": {
+          "name": "support.type.property-name.abinit"
+        },
+        "2": {
+          "name": "punctuation.separator.key-value.abinit"
+        },
+        "3": {
+          "name": "constant.language.abinit"
         }
       }
     },
@@ -185,19 +288,197 @@
           "include": "#timing"
         },
         {
+          "include": "#date"
+        },
+        {
+          "include": "#inner-label"
+        },
+        {
+          "include": "#phrase-label"
+        },
+        {
           "include": "#assignment"
+        },
+        {
+          "include": "#trailing-names"
+        },
+        {
+          "include": "#symmetry"
+        },
+        {
+          "include": "#pseudopotential"
         },
         {
           "include": "#units"
         },
         {
           "include": "#numbers"
+        },
+        {
+          "include": "#brackets"
         }
       ]
     },
+    "heading-content": {
+      "patterns": [
+        {
+          "include": "#inline"
+        },
+        {
+          "include": "#prose-variable"
+        }
+      ]
+    },
+    "text": {
+      "patterns": [
+        {
+          "match": "^[P_](?=\\s)",
+          "name": "punctuation.definition.marker.abinit"
+        },
+        {
+          "include": "#inline"
+        },
+        {
+          "include": "#prose-variable"
+        },
+        {
+          "include": "#note"
+        }
+      ]
+    },
+    "prose-variable": {
+      "match": "\\b(?<![.$@/\\\\-])(?:dmft_triqs_det_n_operations_before_check|dmft_triqs_n_warmup_cycles_restart|dmft_triqs_det_singular_threshold|dmft_triqs_measure_density_matrix|dmft_triqs_det_precision_warning|dmft_triqs_n_warmup_cycles_init|dmft_triqs_det_precision_error|dmft_triqs_use_norm_as_weight|dmft_triqs_compute_integral|dmft_triqs_time_invariance|dmft_triqs_imag_threshold|dmft_triqs_read_ctqmcdata|dmft_triqs_det_init_size|dmft_triqs_nsubdivisions|dmft_triqs_random_seed_a|dmft_triqs_random_seed_b|prtlincompmatrixelements|dmft_triqs_length_cycle|latt_training_set_fname|dmft_triqs_dlr_epsilon|dmft_triqs_measure_g_l|dmft_triqs_move_double|dmft_triqs_prt_entropy|latt_temperature_nstep|latt_temperature_start|spin_projection_qpoint|spin_temperature_nstep|spin_temperature_start|dmft_orbital_filepath|dmft_triqs_gaussorder|dmft_triqs_move_shift|dmft_triqs_pauli_prob|latt_anharm_pot_fname|lwf_temperature_nstep|lwf_temperature_start|spin_init_orientation|spin_init_rotate_axis|dmft_triqs_loc_n_max|dmft_triqs_loc_n_min|dmft_triqs_tol_block|fit_ncoeff_per_iatom|gwls_kmax_complement|gwls_model_parameter|latt_init_hist_fname|latt_temperature_end|latt_var_temperature|spin_calc_thermo_obs|spin_init_hist_fname|spin_temperature_end|spin_var_temperature|td_ef_induced_vecpot|dmft_triqs_dlr_wmax|dmft_triqs_n_cycles|dmft_triqs_off_diag|dmft_triqs_shift_mu|dmft_yukawa_epsilon|dmftctqmc_localprop|getkerange_filepath|getwfkfine_filepath|gwls_list_proj_freq|gwls_npt_gauss_quad|latt_harm_pot_fname|latt_lwf_anharmonic|latt_test_set_fname|lwf_init_hist_fname|lwf_temperature_end|lwf_var_temperature|use_ideal_positions|bs_interp_m3_width|dmft_kspectralfunc|dmft_triqs_entropy|dmft_yukawa_lambda|fit_initializedata|getabiwan_filepath|getdrhodb_filepath|getgstore_filepath|getsigeph_filepath|gwls_kmax_analytic|dmft_yukawa_param|efield_background|fit_generatecoeff|gwls_kmax_numeric|lwf_anchor_ibands|thermal_supercell|bound_anhastrain|bound_rangepower|bound_spcoupling|bs_exchange_term|bs_haydock_niter|bs_interp_method|cd_customnimfrqs|d3e_pert1_magdir|d3e_pert2_magdir|dmft_charge_prec|dmft_full_chipsi|dmft_hybri_limit|dmft_magnfield_b|dmft_triqs_basis|dmft_triqs_n_tau|dmft_wanorthnorm|dmftctqmc_chains|dmftctqmc_correl|dvdb_rspace_cell|energy_reference|eph_frohl_ntheta|eph_use_ftinterp|fit_nimposecoeff|fockdownsampling|getdvdb_filepath|getgwan_filepath|getwfmq_filepath|gpu_kokkos_nthrd|gpu_linalg_limit|gpu_nl_splitsize|gpu_thread_limit|gw_customnfreqsp|gw_frqim_inzgrid|gw_frqre_inzgrid|gw_frqre_tangrid|gwls_correlation|gwls_n_proj_freq|gwls_print_debug|invovl_blksliced|latt_temperature|lwf_anchor_iband|nonlop_ylm_count|plowan_realspace|precon_in_memory|precon_ls_maxite|rmm_diis_savemem|scphon_supercell|sigma_bsum_range|spin_init_qpoint|spin_temperature|vdw_df_threshold|vdw_df_tolerance|xg_nonlop_option|analyze_anh_pot|bs_coulomb_term|bs_interp_kmult|bs_interp_rl_nb|cd_frqim_method|cd_halfway_freq|constraint_kind|cprj_update_lvl|d3e_pert1_atpol|d3e_pert1_magat|d3e_pert2_atpol|d3e_pert2_magat|d3e_pert3_atpol|dielec_constant|dmft_fermi_step|dmft_occnd_imag|dmft_prt_maxent|dmft_read_occnd|dmft_triqs_n_iw|dmftctqmc_basis|dmftctqmc_check|dmftctqmc_gmove|dmftctqmc_grnns|dmftctqmc_order|efmas_calc_dirs|eph_fix_wavevec|eph_path_brange|eph_tols_idelta|fit_imposecoeff|getddb_filepath|getden_filepath|getpot_filepath|getscr_filepath|getvpq_filepath|getwfk_filepath|getwfq_filepath|gpu_nfft_blocks|gw_invalid_freq|gwls_band_index|gwls_diel_model|gwls_first_seed|gwls_kmax_poles|gwls_stern_kmax|hspinfield_cart|latt_ddb_fnames|lwf_anchor_proj|lwf_disentangle|lwf_temperature|num_nonlin_comp|pimd_constraint|plowan_projcalc|pw_unbal_thresh|rcpaw_updatepaw|rcpaw_updatetnc|spin_init_state|spin_write_traj|transport_ngkpt|use_gemm_nonlop|wvl_bigdft_comp|bound_maxcoeff|bs_haydock_tol|bs_interp_mode|bs_interp_prep|cd_subset_freq|cprj_in_memory|d3e_pert1_elfd|d3e_pert1_magn|d3e_pert1_phon|d3e_pert2_elfd|d3e_pert2_magn|d3e_pert2_phon|d3e_pert2_strs|d3e_pert3_elfd|d3e_pert3_phon|dmft_magnfield|dmft_shiftself|dmft_triqs_n_l|dmftctqmc_meas|dmftctqmc_mrka|eph_ngqpt_fine|eph_prtscratew|extfpmd_nbdbuf|extfpmd_pawsph|extfpmd_prterr|fit_anhastrain|fit_rangepower|fit_spcoupling|ga_opt_percent|getgam_eig2nkq|gpu_nl_distrib|gstore_kfilter|gstore_use_lgk|gstore_use_lgq|gstore_with_vk|gwpt_np_wpqbks|gwr_max_hwtene|gwr_sigma_algo|gwr_ucsc_batch|hyb_range_fock|ibte_alpha_mix|latt_pot_fname|lwf_anchor_qpt|lwf_constraint|lwf_init_state|lwf_mc_avg_amp|natom_unitcell|nc_xccc_gspace|nonlinear_info|num_linel_comp|oracle_min_occ|outdata_prefix|plowan_compute|precon_ls_rtol|precon_verbose|spin_mag_field|spin_ntime_pre|spin_pot_fname|spin_sia_k1amp|spin_sia_k1dir|spinmagntarget|supercell_latt|tmpdata_prefix|typat_unitcell|use_nonscf_gkk|vdw_df_acutmin|vdw_df_nsmooth|vdw_df_phisoft|vpq_gpr_energy|vpq_gpr_length|vs_qrad_tolkms|bound_factors|bound_penalty|chebfi_oracle|d3e_pert1_dir|d3e_pert2_dir|d3e_pert3_dir|dmftctqmc_mov|dmftqmc_therm|efield_lambda|efield_period|efmas_deg_tol|elph2_imagden|eph_frohlichm|eph_phrange_w|eph_phwinfact|eph_transport|extfpmd_nband|extfpmd_nbcut|fit_dispterms|fit_max_nbody|fit_nbancoeff|fit_nfixcoeff|fock_icutcoul|gstore_brange|gstore_erange|gwls_exchange|gwr_boxcutmin|hyb_mixing_sr|hyb_range_dft|indata_prefix|kptrlatt_fine|latt_friction|lwf_pot_fname|lwf_projector|magcon_lambda|nblock_lobpcg|neb_cell_algo|oracle_factor|precon_tsmear|rcpaw_rctypat|red_efieldbar|rf2_pert1_dir|rf2_pert2_dir|sigma_nshiftk|slc_pot_fname|spin_dynamics|td_propagator|vdw_df_aratio|vdw_df_dratio|vdw_df_qratio|vdw_df_tweaks|vdw_supercell|vpq_mesh_fact|vpq_nstep_ort|vpq_translate|xred_unitcell|xredsph_extra|adpimd_gamma|bound_cutoff|bound_option|bs_algorithm|bs_eh_cutoff|bs_freq_mesh|bs_hayd_term|cd_full_grid|coefficients|ddb_filepath|ddk_filepath|densfor_pred|dipdip_range|dmft_entropy|dmft_nlambda|dmft_nominal|dmft_orbital|dmft_prtself|dmft_tolfreq|dmftqmc_seed|effmass_free|efield_gmean|efield_phase|efield_sigma|efmas_n_dirs|efmas_ntheta|ep_keepbands|ep_prt_yambo|eph_ahc_type|eph_fix_korq|eph_frohlich|eph_np_pqbks|fit_bancoeff|fit_fixcoeff|fit_spc_maxs|fit_tolmsdfs|fit_weight_t|freeze_displ|freqim_alpha|fxcartfactor|getctqmcdata|gkk_filepath|gkk_rptwrite|gstore_gname|gstore_kzone|gstore_qzone|gwls_recycle|gwr_chi_algo|gwr_rpa_ncut|ibte_abs_tol|ifltransport|ldaminushalf|lotf_classic|lotf_version|lwf_dynamics|natsph_extra|nfreqim_conv|num_lin_comp|optdcmagpawu|outboltztrap|paw_add_core|plowan_bandf|plowan_bandi|plowan_iatom|plowan_lcalc|plowan_natom|random_atpos|ratsph_extra|rcpaw_vhtnzc|sigma_erange|sigma_shiftk|slc_coupling|spin_damping|spin_sia_add|td_ef_lambda|td_exp_order|tolwfr_diago|ucrpa_window|vdw_df_damax|vdw_df_damin|vdw_df_dsoft|vdw_df_ndpts|vdw_df_ngpts|vdw_df_nqpts|vdw_df_nrpts|vdw_df_rsoft|vpq_mix_fact|born_charge|bound_model|bs_calctype|bs_coupling|builtintest|cd_max_freq|chksymbreak|chksymtnons|cineb_start|dmft_prtwan|dmft_wanrad|dmft_x2my2d|dos_maxmode|dvdb_add_lr|efield_gvel|efield_type|efmas_bands|elph_fermie|ep_scalprod|eph_ecutosc|eph_extrael|eph_intmeth|eph_phrange|eph_restart|expert_user|fermie_nest|fit_factors|fit_tolmsde|fit_tolmsdf|fit_tolmsds|frictionbar|gpu_devices|gruns_nddbs|gw_icutcoul|gw_sigxcore|gwaclowrank|gwls_nseeds|gwpt_g2mode|gwr_np_kgts|gwr_regterm|ixcpositron|lotf_nneigx|mdeg_filter|nonlin_comp|nstep_mixed|omegasrdmax|opt_factors|output_file|paral_slice|pitransform|prt_lorbmag|rcpaw_frocc|rcpaw_tolnc|scphon_temp|sigma_ngkpt|special_qpt|spin_dipdip|spin_nctime|spinat_cart|string_algo|symsigma_de|td_ef_ezero|td_ef_tzero|test_effpot|test_prt_ph|ucrpa_bands|use_weights|vdw_df_dcut|vdw_df_gcut|vdw_df_qcut|vdw_df_rcut|vdw_tol_3bt|vdw_typfrag|vpq_nstates|write_files|zeemanfield|bound_cell|bound_step|bound_temp|broadening|bs_nstates|cellcharge|chkdilatmx|cwfs_wouth|ddb_shiftq|debug_mode|dfpt_sciss|diismemory|dipdip_prt|dmft_tollc|dvdb_ngqpt|dvdb_qdamp|dyn_chksym|dyn_tolsym|efmas_dirs|ep_extrael|ep_int_gkk|ep_nspline|ep_qptlist|eph_doping|eph_fermie|eph_fsewin|eph_fsmear|eph_mustar|eph_prefix|fit_cutoff|fit_ncoeff|fockoptmix|focktoldfe|ga_fitness|ga_n_rules|gethaydock|getwfkfine|gpu_option|gruns_ddbs|gw_qprange|gwpt_wmode|gwr_tolqpe|hspinfield|hyb_mixing|ibte_niter|irdchkprdm|irdhaydock|irdwfkfine|linel_comp|lotf_nitex|lwf_nctime|mbpt_sciss|mdf_epsinf|mep_mxstep|mep_solver|neb_spring|omegasimax|opt_effpot|opt_ncoeff|paral_atom|ph_intmeth|ph_nqshift|plowan_nbl|posdoppler|pp_dirpath|prepscphon|printfiles|prt_gf_csv|prtbltztrp|prtchkprdm|prtcurrent|prtfull1wf|prtphbands|prtwf_full|qgrid_type|randomseed|rcpaw_elin|rcpaw_tpaw|red_dfield|red_efield|rfstrs_ref|scr_wrange|slk_rankpp|spin_ntime|td_ef_type|td_restart|tfw_toldfe|use_k_fine|use_oldchi|useextfpmd|usepotzero|vdw_df_zab|vpq_interp|vpq_select|vpq_tolgrs|wvl_crmult|wvl_frmult|wvl_ngauss|wvl_nprccg|autoparal|auxc_scal|berrystep|bound_efs|boxcenter|boxcutmin|bs_loband|bxctmindg|cd_imfrqs|ddb_ngqpt|delayperm|diemixmag|dmatpuopt|dmatudiag|dmft_iter|dmft_mxsf|dmft_nwli|dmft_nwlo|dmft_rslf|dmft_solv|dmftbandf|dmftbandi|dmftcheck|dmftqmc_l|dmftqmc_n|dosdeltae|efmas_deg|efmas_dim|elphsmear|eph_stern|exchn2n3d|f4of2_sla|f6of2_sla|fft_count|field_red|fit_coeff|fit_iatom|fit_tolgf|flexoflag|fock_rcut|freqremax|freqremin|freqspmax|freqspmin|getabiwan|getbscoup|getbsreso|getdrhodb|getpawden|getsuscep|gkk2write|goprecprm|gw_freqsp|gwcalctyp|gwr_nstep|gwrpacorr|iatprj_bs|ibte_prep|imgwfstor|instrflag|irdbscoup|irdbsreso|irddrhodb|irdpawden|irdsuscep|istatshft|ixc_sigma|jfielddir|kptbounds|latt_taup|latt_taut|localrdwf|lw_natopt|lwf_ngqpt|lwf_ntime|lwf_nwann|lwf_sigma|max_ncpus|mixesimgf|natprj_bs|natvshift|nband_sum|ndynimage|nfreqmidm|nomegasrd|noseinert|nscforder|nstep_max|nstep_min|ntimimage|nucdipmom|nzchempot|opt_coeff|optdriver|optforces|optnlxccc|optstress|outscphon|paral_kgb|pawcpxocc|pawecutdg|pawfatbnd|pawnhatxc|pawntheta|pawoptmix|pawoptosc|pawprtden|pawprtdos|pawprtvol|pawspnorb|pawstgylm|pawsushat|ph_ndivsm|ph_nqpath|ph_qshift|piezoflag|plowan_it|plowan_nt|postoldfe|postoldff|prt_model|prtatlist|prtdensph|prtdipole|prtebands|prteliash|prtphsurf|prtposcar|prtprocar|prtsuscep|prtvolimg|ptgroupma|qgbt_cart|recefermi|recgratio|recptrott|rectesteg|rectolden|restartxf|scalecart|slabwsrad|spgroupma|spnorbscl|strprecon|strtarget|symdynmat|symmorphi|targetpol|td_ef_pol|td_ef_tau|td_maxene|td_mexcit|td_prtstr|td_scnmax|temperinc|tempermin|tfkinfunc|tl_nprccg|tl_radius|ts_option|use_rcpaw|usedmatpu|useexexch|usexcnhat|vdw_nfrag|vloc_rcut|vpq_aseed|vpq_avg_g|vpq_nstep|vpq_pkind|vpq_trvec|w90iniprj|w90prtunk|wvl_hgrid|xc_denpos|xc_taupos|xc_tb09_c|ziontypat|a2fsmear|atndlist|atvshift|auxc_ixc|band_gap|berryopt|berrysav|bzlength|chkparal|dmatpawu|dmft_t2g|dossmear|dynimage|ecutsigx|elphflag|ep_b_max|ep_b_min|eph_task|extrapwf|fftcache|freqflag|frzfermi|ga_algor|ga_rules|getbseig|getdelfd|getefmas|getxcart|gkqwrite|goprecon|gw_nqlwl|gwencomp|gwgmcorr|gwr_ntau|gwr_task|icoulomb|icutcoul|irdbseig|irddelfd|irdefmas|istatimg|ivalence|jellslab|kptns_hf|kptrlatt|lin_comp|lw_flexo|lw_qdrpl|lwf_taut|macro_uj|magconon|maxestep|maxomega|mem_test|mqgriddg|nbandkss|nbdblock|ncellmat|neb_algo|nloc_alg|nloc_mem|nnsclohf|nomegasf|nomegasi|normpawu|np_spkpt|npspalch|npspinor|npulayit|ntypalch|ntyppure|nwfshist|paral_rf|pawcross|pawlcutd|pawmixdg|pawprt_b|pawprt_k|pawprtwf|pawujrad|pawusecp|pawxcdev|ph_ngqpt|ph_qpath|ph_smear|ph_wstep|posnstep|prtefmas|prtfsurf|prtnabla|prtphdos|prtspcur|prtvclmb|ptcharge|qptrlatt|quadquad|rcpaw_sc|recnpath|relaxstr|rf1atpol|rf1magat|rf2_dkde|rf2_dkdk|rf2atpol|rf2magat|rf3atpol|rhoqpmix|rmm_diis|signperm|slabzbeg|slabzend|spinaxis|symsigma|symv1scf|td_scthr|telphint|thetamax|thetamin|tolinbox|tolmatch|tolmotif|use_yaml|vacwidth|vel_cell|wfk_task|wfoptalg|algalch|bdberry|bdeigrf|chempot|chkexit|chkprim|ddkfile|dieflag|dilatmx|dipquad|dmft_dc|ecuteps|ecutwfn|einterp|elaflag|ep_nqpt|exchmix|ffnl_lw|fit_efs|get1den|getcell|getdkde|getdkdk|getdvdb|getgwan|getkden|getself|getwfmq|getxred|gw_qlwl|gw_rcut|gwgamma|gwr_fit|iatfixx|iatfixy|iatfixz|iboxcut|ieig2rf|ifcflag|inclvkb|irandom|ird1den|irddkde|irddkdk|irddvdb|irdkden|irdwfmq|istrfix|kptrlen|kssform|lambsig|lexexch|lwfflag|maxnsym|mgfftdg|mixalch|mixprec|mpatpol|natfixx|natfixy|natfixz|natpawu|nbandhf|nefield|nfreqim|nfreqre|nfreqsp|ngfftdg|npimage|npwsigx|nshiftk|nshiftq|nsphere|nspinor|nstrfix|ntemper|optcell|papiopt|pawlmix|pawnphi|pawnzlm|pawovlp|pawujat|polflag|ppmodel|prepalw|prepanl|prepgkk|prt1mag|prt_ifc|prtdosm|prtgden|prthist|prtkbff|prtkden|prtlden|prtnest|prtpsps|prtsrlr|prtvhxc|prtvpsp|prtwant|pseudos|pvelmax|qrefine|quadmom|ramansr|readifc|recnrec|recrcut|relaxat|rf1elfd|rf1phon|rf2elfd|rf2phon|rf2strs|rf3elfd|rf3phon|rfatpol|rfomega|rifcsph|rsurdir|sel_efs|selectz|smdelta|spbroad|spgaxor|spgorig|spgroup|spin_dt|stmbias|strfact|thmflag|tim1rev|timdisp|toldmag|tolmxde|tphysel|use_gbt|use_slk|usedmft|usefock|usekden|usepawu|usepead|vcutgeo|vdw_tol|wfkfile|wtatcon|xclevel|xyzfile|adpimd|alphon|angdeg|bandpp|bfield|brvltt|bzpath|chneut|chrgat|denout|densty|dfield|diecut|diegap|dielam|dielng|diemac|diemix|dipdip|domega|dossum|dostol|dpclim|ecutsm|efield|enunit|eshift|esmear|fftalg|foldep|folstp|genafm|geoopt|get1wf|getddb|getddk|getden|getocc|getqps|getscr|getvel|getvpq|getwfk|getwfq|gpsurf|gw1rdm|gwcomp|gwpara|hmcsst|iatcon|iatfix|iatsph|ifcana|ifcout|imgmov|iomode|ionmov|iprcel|iprcfc|ird1wf|irdddb|irdddk|irdden|irdqps|irdscr|irdvdw|irdwfk|irdwfq|isecur|istatr|istwfk|ixcrot|jdtset|kberry|kptnrm|kptopt|lapout|lgrad2|lstep2|lwf_dt|lwf_mu|magpen|maxatd|maxcpd|mdtemp|mdwall|mk1mem|mkqmem|moldyn|mqgrid|mustar|natcon|natfix|natifc|natsph|nbdbuf|nberry|ncoeff|nconeq|nctime|ndivsm|ndtset|nelect|nfftdg|ng2qpt|ngqpt1|ngqpt2|ngrids|nimage|nkpath|nkptgw|nkpthf|nlflag|nnsclo|np_slk|npband|nppert|npweps|npwkss|npwwfn|nqpath|nqptdm|nqshft|nslice|nspden|nsppol|ntheta|ntypat|nucefg|nwchan|objaat|objaax|objarf|objaro|objatr|objbat|objbax|objbrf|objbro|objbtr|occopt|orbmag|ortalg|pawujv|phimax|phimin|pimass|polcen|posocc|ppmfrq|prt1dm|prtbbb|prtcif|prtddb|prtden|prtdos|prtefg|prteig|prtelf|prtevk|prtgeo|prtgkk|prtgsr|prtkpt|prtmbm|prtocc|prtpot|prtstm|prtvdw|prtvha|prtvol|prtvxc|prtxml|q1shft|q2shft|qnrml1|qnrml2|qprtrb|qptnrm|qptopt|radstp|ratmin|ratopt|ratsph|rf1dir|rf2dir|rf3dir|rfelfd|rfmagn|rfmeth|rfphon|rfstrs|rprimd|shiftk|shiftq|so_psp|spinat|spmeth|symafm|symbec|symchi|symgkq|symrel|thmtol|timopt|tolcum|toldfe|toldff|tolimg|tolmxf|tolrde|tolrff|tolsym|tolvrs|tolwfr|tsmear|udtset|usepaw|userec|useria|userib|useric|userid|userie|userra|userrb|userrc|userrd|userre|usewvl|useylm|vaclst|vacnum|vdw_xc|vprtrb|wfinit|xangst|acell|atifc|atrad|bmass|coff1|coff2|ddamp|dltyp|dtele|dtion|efmas|eivec|fband|fftgw|frmax|frmin|gwmem|hmctt|iatnd|intxc|jpawu|kptgw|kptns|lgrad|lpawu|lstep|mband|mgfft|mkmem|mpdir|mpopt|natnd|natom|natrd|nband|ncell|nchan|ncout|ndivk|nfreq|ngfft|ngkpt|ngqpt|ngrid|nline|npfft|nph1l|nph2l|npkpt|npvel|nstep|ntime|nucfc|objan|objbn|prtwf|qmass|qpath|qph1l|qph2l|qptdm|ratsm|rfddk|rfdir|rfeta|rprim|rsurf|tmesh|tnons|typat|ucrpa|upawu|wfmix|x1rdm|xcart|znucl|awtr|bdgw|brav|cpuh|cpum|cpus|crit|ecut|inpt|iqpt|irho|iscf|ivol|nfft|nkpt|nnos|nobj|nphf|nphi|npsp|nqfd|nqpt|nsym|qgbt|qptn|rcut|scal|vpts|xred|zcut|zora|amu|asr|ixc|kpt|mpw|nsa|nsb|nsc|occ|qpt|vel|wtk|wtq)(?![\\w#]|\\.\\w)",
+      "name": "keyword.other.variable.abinit"
+    },
+    "note": {
+      "match": "[A-Za-z_][\\w'#+-]*(?:\\.\\w+)*|\\d+[A-Za-z_][\\w'#+-]*",
+      "name": "comment.line.note.abinit"
+    },
+    "date": {
+      "patterns": [
+        {
+          "match": "\\b(?:Mon|Tue|Wed|Thu|Fri|Sat|Sun)\\s+(?:\\d{1,2}\\s+)?(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)(?:\\s+\\d{1,2})?(?:\\s+\\d{1,2}:\\d\\d(?::\\d\\d)?)?\\s+\\d{4}\\b",
+          "name": "constant.numeric.date.abinit"
+        },
+        {
+          "match": "\\b(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\\s+\\d{4}\\b",
+          "name": "constant.numeric.date.abinit"
+        },
+        {
+          "match": "(?<![\\w/.])\\d{1,2}/\\d{1,2}/\\d{2,4}(?![\\w/])",
+          "name": "constant.numeric.date.abinit"
+        },
+        {
+          "match": "(?<![\\w.])\\d{1,2}h\\d\\d(?![\\w])",
+          "name": "constant.numeric.time.abinit"
+        },
+        {
+          "match": "(?<!\\w)[0-9a-f]{32,64}(?!\\w)",
+          "name": "constant.numeric.hash.abinit"
+        }
+      ]
+    },
+    "inner-label": {
+      "match": "(?<=;\\s|,\\s)([A-Za-z][\\w ]{0,40}?)\\s*(:)(?=\\s+\\S)",
+      "captures": {
+        "1": {
+          "name": "support.type.property-name.abinit",
+          "patterns": [
+            {
+              "include": "#known-variable"
+            }
+          ]
+        },
+        "2": {
+          "name": "punctuation.separator.key-value.abinit"
+        }
+      }
+    },
+    "phrase-label": {
+      "match": "(?:^[-.P_+)\\s]?\\s*|(?<=\\s\\s|;\\s|,\\s))((?:(?:[A-Za-z][A-Za-z#.'-]*|\\([^()=\\n]*\\))\\s+){1,5}?)(?=[A-Za-z_][\\w#]*(?:[,/][A-Za-z_][\\w#]*)*(?:\\s?(?:\\([^()=<>\\n]*\\)|\\[[^\\[\\]=<>\\n]*\\]))*\\s*=(?![=>]))",
+      "captures": {
+        "1": {
+          "name": "support.type.property-name.abinit",
+          "patterns": [
+            {
+              "include": "#known-variable"
+            },
+            {
+              "include": "#units"
+            },
+            {
+              "include": "#brackets"
+            }
+          ]
+        }
+      }
+    },
+    "trailing-names": {
+      "patterns": [
+        {
+          "match": "(?<=\\s\\s)([a-z]\\w*(?:\\s*,\\s*[a-z]\\w*)+)\\s*$",
+          "captures": {
+            "1": {
+              "name": "support.type.property-name.abinit",
+              "patterns": [
+                {
+                  "include": "#known-variable"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "match": "(?<=\\s\\s)([a-z]\\w*(?:\\*[a-z]\\w*)+)(\\([^()\\n]*\\))\\s*$",
+          "captures": {
+            "1": {
+              "name": "support.type.property-name.abinit",
+              "patterns": [
+                {
+                  "include": "#known-variable"
+                }
+              ]
+            },
+            "2": {
+              "patterns": [
+                {
+                  "include": "#units"
+                },
+                {
+                  "include": "#brackets"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "match": "(?<![\\w])kpt#",
+          "name": "support.type.property-name.abinit"
+        }
+      ]
+    },
+    "symmetry": {
+      "match": "(?<=space group |Bravais |lattice is )[A-Za-z][\\w/^-]*",
+      "name": "constant.language.symmetry.abinit"
+    },
+    "pseudopotential": {
+      "match": "(?<![\\w.-])(?:((?:A[cglmrstu]|B[aehikr]?|C[adeflmnorsu]?|D[bsy]|E[rsu]|F[elmr]?|G[ade]|H[efgos]?|I[nr]?|Kr?|L[airuv]|M[cdgnot]|N[abdehiop]?|O[gs]?|P[abdmortu]?|R[abefghnu]|S[bcegimnr]?|T[abcehilms]|U|V|W|Xe|Yb?|Z[nr]))\\s+)?(ONCVPSP|ATOMPAW|FHI98PP|HGH|GTH|Troullier-Martins)(?=[-\\s]|$)",
+      "captures": {
+        "1": {
+          "name": "constant.language.element.abinit"
+        },
+        "2": {
+          "name": "support.type.property-name.abinit"
+        }
+      }
+    },
+    "brackets": {
+      "match": "[()\\[\\]]",
+      "name": "punctuation.section.brackets.abinit"
+    },
     "url": {
       "match": "\\b(?:https?|ftp)://[^\\s<>\\\"')\\]]*[^\\s<>\\\"').,;:\\]]",
-      "name": "markup.underline.link.abinit"
+      "name": "markup.underline.link.abinit string.other.link.abinit"
     },
     "quoted-string": {
       "patterns": [
@@ -286,7 +567,7 @@
       "name": "comment.line.timing.abinit"
     },
     "assignment": {
-      "match": "(?<![\\w)\\]#-])(?<!\\w\\.)([A-Za-z_][\\w#]*(?:,[A-Za-z_][\\w#]*)*)(\\s?\\([^()=<>\\n]*\\))?\\s*(=)(?![=>])",
+      "match": "(?<![\\w)\\]#-])(?<!\\w\\.)([A-Za-z_][\\w#]*(?:[,/][A-Za-z_][\\w#]*)*)((?:\\s?(?:\\([^()=<>\\n]*\\)|\\[[^\\[\\]=<>\\n]*\\]))*)\\s*(=)(?![=>])",
       "captures": {
         "1": {
           "name": "support.type.property-name.abinit",
@@ -299,10 +580,20 @@
         "2": {
           "patterns": [
             {
+              "include": "#known-variable"
+            },
+            {
               "include": "#units"
             },
             {
               "include": "#numbers"
+            },
+            {
+              "include": "#brackets"
+            },
+            {
+              "match": "[A-Za-z_]\\w*",
+              "name": "support.type.property-name.abinit"
             }
           ]
         },
@@ -410,7 +701,7 @@
       "while": "^(?=\\s|$)",
       "patterns": [
         {
-          "include": "#inline"
+          "include": "#text"
         }
       ]
     },
@@ -474,6 +765,14 @@
           "name": "constant.language.abinit"
         },
         {
+          "match": "(?<=,)\\s*((?:A[cglmrstu]|B[aehikr]?|C[adeflmnorsu]?|D[bsy]|E[rsu]|F[elmr]?|G[ade]|H[efgos]?|I[nr]?|Kr?|L[airuv]|M[cdgnot]|N[abdehiop]?|O[gs]?|P[abdmortu]?|R[abefghnu]|S[bcegimnr]?|T[abcehilms]|U|V|W|Xe|Yb?|Z[nr]))(?=\\s*\\])",
+          "captures": {
+            "1": {
+              "name": "constant.language.element.abinit"
+            }
+          }
+        },
+        {
           "match": "[\\[\\]{}]",
           "name": "punctuation.definition.collection.abinit"
         },
@@ -482,7 +781,7 @@
           "name": "punctuation.separator.abinit"
         },
         {
-          "include": "#inline"
+          "include": "#text"
         }
       ]
     }

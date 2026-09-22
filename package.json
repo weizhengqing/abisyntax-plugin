@@ -2,7 +2,7 @@
   "name": "abisyntax",
   "displayName": "ABINIT Syntax Highlighting",
   "description": "Syntax highlighting for ABINIT input files (all 1400+ variables of abinit, anaddb, optic, multibinit, aim and atdep), output/log files, and XYZ/POSCAR structures.",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "publisher": "weizhengqing",
   "repository": {
     "type": "git",
@@ -67,7 +67,7 @@
           "*_SIGRES"
         ],
         "firstLine": "^(\\.Version \\d+\\.\\d+\\.\\d+ of [A-Z0-9]+|\\s*ABINIT \\d+\\.\\d+\\.\\d+\\s*$)",
-        "configuration": "./language-configuration.json"
+        "configuration": "./language-configuration-output.json"
       },
       {
         "id": "abinit-xyz",

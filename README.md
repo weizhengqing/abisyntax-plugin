@@ -18,7 +18,12 @@ Syntax highlighting for [ABINIT](https://www.abinit.org/) input and output files
 
 ### Output files (`.abo`, `.log`, `.err`, `.output`, `*_EIG`, `*_DDB`, `*_DOS`, `*_PHFRQ`, `*_GW`, `*_SIGRES`)
 
-- Section titles (`== DATASET 1 ==`, `--- Iteration ...`, `---OUTPUT---`, `-outvars: ...`) and separators.
+- Section titles (`== DATASET 1 ==`, `--- Iteration ...`, `---OUTPUT---`, `-outvars: ...`) and separators; block
+  titles such as `Cartesian coordinates (xcart) [bohr]` or `Exchange-correlation functional ... will be:`.
+- Descriptive labels in front of values (`Unit cell volume ucvol=`, `Fermi (or HOMO) energy (eV) =`,
+  `znucl, zion, pspdat`); explanatory sentences, notes and reference lists as secondary text, so that every word
+  has a colour.
+- Dates (`Thu 16 Apr 2026`, `13h58`), element symbols, space groups.
 - Echo of input variables and the memory summary, with the same colour as in input files.
 - Embedded YAML documents (`--- !ResultsGS`, `--- !DatasetInfo`, `--- !WARNING`, ...) with keys, values and
   `message: |` blocks.
@@ -44,12 +49,20 @@ The grammars only use standard TextMate scopes, so every colour theme gives a co
 | Unit                                     | `keyword.other.unit`          |
 | String, path, file name                  | `string`                      |
 | Comment, separator line                  | `comment`                     |
-| Section title                            | `markup.heading`              |
+| Section / block title                    | `markup.heading`              |
+| Explanatory text, notes, references      | `comment.line.note`           |
+| Date, time                               | `constant.numeric.date` / `.time` |
+| Element symbol, space group              | `constant.language`           |
 | Error / warning / success                | `invalid` / `markup.deleted` / `markup.inserted` |
 
 Individual colours can be changed with
 [`editor.tokenColorCustomizations`](https://code.visualstudio.com/docs/getstarted/themes#_editor-syntax-highlighting),
-e.g. `"textMateRules": [{"scope": "keyword.other.variable.abinit", "settings": {"foreground": "#4FC1FF"}}]`.
+e.g. `"textMateRules": [{"scope": "keyword.other.variable.abinit", "settings": {"foreground": "#4FC1FF"}}]`,
+or `{"scope": "comment.line.note.abinit", "settings": {"foreground": "#D4D4D4"}}` to show explanatory text in the
+default colour again.
+
+VS Code's bracket-pair colours are switched off in output files: brackets there are often unbalanced (a `(` in
+one line and the `)` in another), which made them yellow, purple or red at random.
 
 ## Installation
 

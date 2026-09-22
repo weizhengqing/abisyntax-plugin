@@ -1,5 +1,22 @@
 # Changelog
 
+## 1.3.0
+
+### Output files
+- Every word is coloured now. Block titles (`Cartesian coordinates (xcart) [bohr]`,
+  `... will be:`, `First record :`, upper-case log lines) use the heading colour; the words in front of a value
+  (`Unit cell volume ucvol=`, `Fermi (or HOMO) energy (eV) =`, `; DEN or POT disk file :`, `znucl, zion, pspdat`)
+  the name colour; sentences, notes and reference lists are secondary text (`comment.line.note`).
+- ABINIT variables are also recognised inside sentences (`decrease tolsym to ...`), except those that are English
+  words (`order`, `charge`, ...).
+- Dates are coloured as a whole (`Thu 16 Apr 2026`, `Jul 2023`, `13h58`), not only their digits.
+- Element symbols (`- Al  ONCVPSP-3.2.3.1`, `xred: - [..., Al]`), space groups, words inside `name(...)=`,
+  `yes`/`no` of the build information, md5 checksums.
+- Links also get a colour (some themes only underline them).
+- Brackets: one colour everywhere. VS Code's bracket-pair colourisation is off for output files
+  (`language-configuration-output.json`); unbalanced brackets were shown yellow, purple or red.
+- Rows of numbers are matched as a whole, which keeps large log files fast.
+
 ## 1.2.0
 
 ### Input files
