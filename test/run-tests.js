@@ -259,6 +259,13 @@ async function testOutputGrammar() {
   expectLine(g, '  GPU support    : ', { 'GPU support': P });
   expectLine(g, ' At SCF step   16, etot is converged : ', { 'is converged': 'markup.inserted', 16: N });
   expectLine(g, '     tolsym is bigger than 1.0e-8, decrease tolsym', { tolsym: V, bigger: C });
+  // brackets take the colour of what surrounds them
+  expectLine(g, '- Comput. Material Science 43, 1056 (2008).', { '(': C, 2008: N, ')': C });
+  expectLine(g, '- [1] Specification of an extensible and portable file format', { '[': C, 1: N, ']': C });
+  expectLine(g, ' kpt#   1, nband= 82, wtk=  0.05556 (reduced coord)', { '(': C, ')': C });
+  expectLine(g, '  sigma(1 1)=  2.58072324E-05', { '(': P, ')': P, 1: N });
+  expectLine(g, ' Cartesian coordinates (xcart) [bohr]', { '(': H, '[': H });
+  expectLine(g, '- Comment: to be cited in case the ETSF_IO file format is used, i.e. iomode=3.', { 'i.e': C, iomode: V });
   // variables that are English words are not highlighted in sentences
   expectLine(g, '    In order to avoid spurious effects, the atomic coordinates have been', { order: C, atomic: C });
   expectLine(g, '    md5  : 57224185a50eb565dff7432e4aa35376', { '57224185a50eb565dff7432e4aa35376': 'constant.numeric.hash' });
@@ -273,7 +280,8 @@ async function testOutputGrammar() {
   expectLine(g, 'dimensions: {natom: 29, nkpt: 18, dtset: 1, }', { dimensions: P, natom: V, dtset: P, 29: N }, doc);
   expectLine(g, 'convergence: {deltae: -2.933E-10, diffor: null, }', { null: 'constant.language' }, doc);
   expectLine(g, "'-kT*entropy'       : -1.57710899060653E-01", { "'-kT*entropy'": P }, doc);
-  expectLine(g, '- [ -1.9086E-08,  -1.0530E-11,   3.1929E-01, Al]', { Al: 'constant.language.element' }, doc);
+  expectLine(g, '- [ -1.9086E-08,  -1.0530E-11,   3.1929E-01, Al]', { Al: 'constant.language.element', '[': P }, doc);
+  expectLine(g, 'dimensions: {natom: 29, nkpt: 18, }', { '{': P, '}': P }, doc);
   expectLine(g, 'comment   : Summary of ground state results', { comment: P, Summary: C }, doc);
   expectLine(g, 'lattice_angles: [ 90.000,  90.000,  90.000, ] # degrees, (23, 13, 12)',
     { '# degrees, (23, 13, 12)': 'comment' }, doc);
@@ -334,8 +342,8 @@ async function testExamples() {
             scopes.every((s) => s.startsWith('meta.') || s.startsWith('punctuation.'))) {
           if (problems++ < 5) fail(`${rel}:${i + 1} not highlighted: "${t.text}"`);
         }
-        // output files: every word gets a colour (title, name, value or free text)
-        if (scope === 'source.abinit-output' && /[A-Za-z]{2}/.test(t.text) && plain(t.scopes)) {
+        // output files: every word and bracket gets a colour (title, name, value or free text)
+        if (scope === 'source.abinit-output' && /[A-Za-z]{2}|[()[\]{}]/.test(t.text) && plain(t.scopes)) {
           if (problems++ < 5) fail(`${rel}:${i + 1} not highlighted: "${t.text}"`);
         }
         if (scope !== 'source.abinit' && scopes.some((s) => s.startsWith('invalid')) &&

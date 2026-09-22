@@ -379,6 +379,8 @@ def output_grammar():
             "text": {"patterns": [
                 # column-1 markers of ABINIT's output: "P This job should need ..."
                 {"match": r"^[P_](?=\s)", "name": "punctuation.definition.marker.abinit"},
+                # brackets of sentences take the colour of the sentence
+                {"match": r"[()\[\]]", "name": f"{note_scope} punctuation.section.brackets.abinit"},
                 {"include": "#inline"},
                 {"include": "#prose-variable"},
                 {"include": "#note"},
@@ -419,6 +421,7 @@ def output_grammar():
             # " Total energy (etotal) [Ha]= ..."  "; Volume of real space cell (bohr^3)= ..."
             "phrase-label": {
                 "match": r"(?:^[-.P_+)\s]?\s*|(?<=\s\s|;\s|,\s))"
+                         r"(?!(?:i\.e|e\.g|cf)\.)"  # "i.e. iomode=3" is a sentence
                          r"((?:(?:[A-Za-z][A-Za-z#.'-]*|\([^()=\n]*\))\s+){1,5}?)"
                          r"(?=[A-Za-z_][\w#]*(?:[,/][A-Za-z_][\w#]*)*"
                          r"(?:\s?(?:\([^()=<>\n]*\)|\[[^\[\]=<>\n]*\]))*\s*=(?![=>]))",
@@ -432,7 +435,7 @@ def output_grammar():
                 {"match": r"(?<=\s\s)([a-z]\w*(?:\*[a-z]\w*)+)(\([^()\n]*\))\s*$",
                  "captures": {
                      "1": {"name": name_scope, "patterns": [known_var]},
-                     "2": {"patterns": [{"include": "#units"}, {"include": "#brackets"}]},
+                     "2": {"name": name_scope, "patterns": [{"include": "#units"}, {"include": "#brackets"}]},
                  }},
                 {"match": r"(?<![\w])kpt#", "name": name_scope},
             ]},
@@ -449,8 +452,9 @@ def output_grammar():
                     "2": {"name": name_scope},
                 },
             },
-            # One colour for all brackets (VS Code's bracket-pair colours are
-            # switched off for this language in language-configuration-output.json).
+            # Brackets have no colour of their own: they take the colour of the
+            # title, name or sentence around them (VS Code's bracket-pair colours
+            # are switched off for this language in language-configuration-output.json).
             "brackets": {
                 "match": r"[()\[\]]",
                 "name": "punctuation.section.brackets.abinit",
@@ -491,8 +495,8 @@ def output_grammar():
             # {SCF_istep: 1 , Vnl|psi>: 1.2 , wall_time: ' 0:14 [minutes] '}
             "flow-mapping": {
                 "begin": r"\{", "end": r"\}",
-                "beginCaptures": caps(**{"0": "punctuation.definition.mapping.begin.abinit"}),
-                "endCaptures": caps(**{"0": "punctuation.definition.mapping.end.abinit"}),
+                "beginCaptures": caps(**{"0": f"{name_scope} punctuation.definition.mapping.begin.abinit"}),
+                "endCaptures": caps(**{"0": f"{name_scope} punctuation.definition.mapping.end.abinit"}),
                 "patterns": [{"include": "#yaml-flow-content"}],
             },
             "timing": {"match": r"<<<\s*TIME\b.*$", "name": "comment.line.timing.abinit"},
@@ -502,7 +506,7 @@ def output_grammar():
                          r"((?:\s?(?:\([^()=<>\n]*\)|\[[^\[\]=<>\n]*\]))*)\s*(=)(?![=>])",
                 "captures": {
                     "1": {"name": name_scope, "patterns": [known_var]},
-                    "2": {"patterns": [known_var, {"include": "#units"}, {"include": "#numbers"},
+                    "2": {"name": name_scope, "patterns": [known_var, {"include": "#units"}, {"include": "#numbers"},
                                        {"include": "#brackets"},
                                        {"match": r"[A-Za-z_]\w*", "name": name_scope}]},
                     "3": {"name": "keyword.operator.assignment.abinit"},
@@ -583,7 +587,8 @@ def output_grammar():
                 # xred: - [ -1.9086E-08, -1.0530E-11, 3.1929E-01, Al]
                 {"match": rf"(?<=,)\s*({element})(?=\s*\])",
                  "captures": caps(**{"1": "constant.language.element.abinit"})},
-                {"match": r"[\[\]{}]", "name": "punctuation.definition.collection.abinit"},
+                # braces and brackets of YAML values: the colour of the keys
+                {"match": r"[\[\]{}]", "name": f"{name_scope} punctuation.definition.collection.abinit"},
                 {"match": r",", "name": "punctuation.separator.abinit"},
                 {"include": "#text"},
             ]},

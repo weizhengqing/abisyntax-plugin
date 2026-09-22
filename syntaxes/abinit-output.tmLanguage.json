@@ -336,6 +336,10 @@
           "name": "punctuation.definition.marker.abinit"
         },
         {
+          "match": "[()\\[\\]]",
+          "name": "comment.line.note.abinit punctuation.section.brackets.abinit"
+        },
+        {
           "include": "#inline"
         },
         {
@@ -395,7 +399,7 @@
       }
     },
     "phrase-label": {
-      "match": "(?:^[-.P_+)\\s]?\\s*|(?<=\\s\\s|;\\s|,\\s))((?:(?:[A-Za-z][A-Za-z#.'-]*|\\([^()=\\n]*\\))\\s+){1,5}?)(?=[A-Za-z_][\\w#]*(?:[,/][A-Za-z_][\\w#]*)*(?:\\s?(?:\\([^()=<>\\n]*\\)|\\[[^\\[\\]=<>\\n]*\\]))*\\s*=(?![=>]))",
+      "match": "(?:^[-.P_+)\\s]?\\s*|(?<=\\s\\s|;\\s|,\\s))(?!(?:i\\.e|e\\.g|cf)\\.)((?:(?:[A-Za-z][A-Za-z#.'-]*|\\([^()=\\n]*\\))\\s+){1,5}?)(?=[A-Za-z_][\\w#]*(?:[,/][A-Za-z_][\\w#]*)*(?:\\s?(?:\\([^()=<>\\n]*\\)|\\[[^\\[\\]=<>\\n]*\\]))*\\s*=(?![=>]))",
       "captures": {
         "1": {
           "name": "support.type.property-name.abinit",
@@ -440,6 +444,7 @@
               ]
             },
             "2": {
+              "name": "support.type.property-name.abinit",
               "patterns": [
                 {
                   "include": "#units"
@@ -548,12 +553,12 @@
       "end": "\\}",
       "beginCaptures": {
         "0": {
-          "name": "punctuation.definition.mapping.begin.abinit"
+          "name": "support.type.property-name.abinit punctuation.definition.mapping.begin.abinit"
         }
       },
       "endCaptures": {
         "0": {
-          "name": "punctuation.definition.mapping.end.abinit"
+          "name": "support.type.property-name.abinit punctuation.definition.mapping.end.abinit"
         }
       },
       "patterns": [
@@ -578,6 +583,7 @@
           ]
         },
         "2": {
+          "name": "support.type.property-name.abinit",
           "patterns": [
             {
               "include": "#known-variable"
@@ -774,7 +780,7 @@
         },
         {
           "match": "[\\[\\]{}]",
-          "name": "punctuation.definition.collection.abinit"
+          "name": "support.type.property-name.abinit punctuation.definition.collection.abinit"
         },
         {
           "match": ",",

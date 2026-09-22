@@ -62,7 +62,8 @@ or `{"scope": "comment.line.note.abinit", "settings": {"foreground": "#D4D4D4"}}
 default colour again.
 
 VS Code's bracket-pair colours are switched off in output files: brackets there are often unbalanced (a `(` in
-one line and the `)` in another), which made them yellow, purple or red at random.
+one line and the `)` in another), which made them yellow, purple or red at random. Instead, brackets take the
+colour of the text they belong to (sentence, name, title or YAML value).
 
 ## Installation
 

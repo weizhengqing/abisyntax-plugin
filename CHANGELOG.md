@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.3.1
+
+### Output files
+- Brackets take the colour of the text around them: parentheses and square brackets in sentences and reference
+  lists (`(2008)`, `[1]`, `(reduced coord)`) the free-text colour, in `sigma(1 1)=` / `ecut(hartree)=` the
+  name colour, in titles the title colour; `{ }` and `[ ]` of YAML values the colour of the keys.
+- `i.e.` / `e.g.` in front of `name=value` are no longer taken for a label.
+
 ## 1.3.0
 
 ### Output files
