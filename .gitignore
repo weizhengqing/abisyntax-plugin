@@ -3,3 +3,9 @@ out*.txt
 .vscode-test/
 node_modules/
 .DS_Store
+
+# Local only, not published to GitHub
+test/
+.vscodeignore
+CHANGELOG.md
+package-lock.json
