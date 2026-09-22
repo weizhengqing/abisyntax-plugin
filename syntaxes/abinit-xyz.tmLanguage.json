@@ -1,34 +1,39 @@
 {
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
   "name": "XYZ Structure",
   "scopeName": "source.xyz",
   "patterns": [
     {
-      "name": "constant.numeric.natom.xyz",
-      "match": "^\\s*[0-9]+\\s*$"
-    },
-    {
-      "match": "^\\s*([A-Za-z]{1,3})\\s+([-\\+\\.0-9eE]+)\\s+([-\\+\\.0-9eE]+)\\s+([-\\+\\.0-9eE]+)(?:\\s+(.*))?$",
-      "captures": {
+      "comment": "Atom-count line; the following line is a free-form title (repeats in trajectories).",
+      "begin": "^\\s*(\\d+)\\s*$",
+      "beginCaptures": {
         "1": {
-          "name": "entity.name.tag.element.xyz"
-        },
-        "2": {
-          "name": "constant.numeric.x.xyz"
-        },
-        "3": {
-          "name": "constant.numeric.y.xyz"
-        },
-        "4": {
-          "name": "constant.numeric.z.xyz"
-        },
-        "5": {
-          "name": "comment.line.xyz"
+          "name": "constant.numeric.integer.natom.xyz"
+        }
+      },
+      "end": "^.*$",
+      "endCaptures": {
+        "0": {
+          "name": "comment.line.title.xyz"
         }
       }
     },
     {
-      "name": "comment.line.xyz",
-      "match": "^.+$"
+      "comment": "Element symbol (or atomic number) at the start of an atom line.",
+      "match": "^\\s*([A-Za-z][A-Za-z]?\\w*|\\d{1,3})(?=\\s)",
+      "captures": {
+        "1": {
+          "name": "entity.name.tag.element.xyz"
+        }
+      }
+    },
+    {
+      "match": "(?<![\\w.])[-+]?(?:\\d+\\.?\\d*|\\.\\d+)(?:[eEdD][-+]?\\d+)?(?![\\w.])",
+      "name": "constant.numeric.float.xyz"
+    },
+    {
+      "match": "#.*$",
+      "name": "comment.line.number-sign.xyz"
     }
   ]
 }

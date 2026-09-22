@@ -1,46 +1,66 @@
 {
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
   "name": "VASP POSCAR",
   "scopeName": "source.vasp",
   "patterns": [
     {
-      "match": "^\\s*([A-Za-z]{1,3})\\s+([-\\+\\.0-9eE]+)\\s+([-\\+\\.0-9eE]+)\\s+([-\\+\\.0-9eE]+)(?:\\s+(.*))?$",
+      "comment": "The first line of a POSCAR is a free-form title.",
+      "match": "\\A.*$",
+      "name": "comment.line.title.vasp"
+    },
+    {
+      "match": "(?i)^\\s*(selective(?:\\s+dynamics)?|direct|cartesian|reciprocal)\\s*$",
       "captures": {
         "1": {
-          "name": "entity.name.tag.element.vasp"
-        },
-        "2": {
-          "name": "constant.numeric.x.vasp"
-        },
-        "3": {
-          "name": "constant.numeric.y.vasp"
-        },
-        "4": {
-          "name": "constant.numeric.z.vasp"
-        },
-        "5": {
-          "name": "comment.line.vasp"
+          "name": "keyword.control.vasp"
         }
       }
     },
     {
-      "name": "constant.numeric.vector.vasp",
-      "match": "^\\s*([-\\+\\.0-9eE]+)\\s+([-\\+\\.0-9eE]+)\\s+([-\\+\\.0-9eE]+)\\s*$"
+      "comment": "Species line (VASP 5+): Si C  /  Fe_pv O",
+      "begin": "^(?=\\s*[A-Z][a-z]?(?:[_/]\\S*)?(?:\\s+[A-Z][a-z]?(?:[_/]\\S*)?)*\\s*$)",
+      "end": "$",
+      "patterns": [
+        {
+          "match": "[A-Z][a-z]?(?:[_/]\\S*)?",
+          "name": "entity.name.tag.element.vasp"
+        }
+      ]
     },
     {
-      "name": "keyword.control.vasp",
-      "match": "(?i)^[ \\t]*(Direct|Cartesian|Selective dynamics)[ \\t]*$"
+      "comment": "Three coordinates, optional selective-dynamics flags, optional trailing label/comment.",
+      "match": "^\\s*([-+]?(?:\\d+\\.?\\d*|\\.\\d+)(?:[eE][-+]?\\d+)?)\\s+([-+]?(?:\\d+\\.?\\d*|\\.\\d+)(?:[eE][-+]?\\d+)?)\\s+([-+]?(?:\\d+\\.?\\d*|\\.\\d+)(?:[eE][-+]?\\d+)?)(?:\\s+([TF])\\s+([TF])\\s+([TF]))?(?:\\s+(\\S.*?))?\\s*$",
+      "captures": {
+        "1": {
+          "name": "constant.numeric.float.vasp"
+        },
+        "2": {
+          "name": "constant.numeric.float.vasp"
+        },
+        "3": {
+          "name": "constant.numeric.float.vasp"
+        },
+        "4": {
+          "name": "constant.language.boolean.vasp"
+        },
+        "5": {
+          "name": "constant.language.boolean.vasp"
+        },
+        "6": {
+          "name": "constant.language.boolean.vasp"
+        },
+        "7": {
+          "name": "comment.line.label.vasp"
+        }
+      }
     },
     {
-      "name": "entity.name.type.vasp",
-      "match": "^[ \\t]*[A-Za-z]+(?:[ \\t]+[A-Za-z]+)*[ \\t]*$"
+      "match": "(?<![\\w.])[-+]?(?:\\d+\\.?\\d*|\\.\\d+)(?:[eE][-+]?\\d+)?(?![\\w.])",
+      "name": "constant.numeric.vasp"
     },
     {
-      "name": "constant.numeric.vasp",
-      "match": "(?<![a-zA-Z0-9_\\\\.])([-\\+]?[0-9]*\\.?[0-9]+([eE][-\\+]?[0-9]+)?)\\b"
-    },
-    {
-      "name": "comment.line.vasp",
-      "match": "^.+$"
+      "match": "[#!].*$",
+      "name": "comment.line.vasp"
     }
   ]
 }

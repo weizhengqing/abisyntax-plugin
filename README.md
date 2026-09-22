@@ -1,10 +1,55 @@
 # ABINIT VS Code Extension
 
-A comprehensive syntax highlighting extension for [ABINIT](https://www.abinit.org/) input and output files in Visual Studio Code.
+Syntax highlighting for [ABINIT](https://www.abinit.org/) input and output files in Visual Studio Code.
 
 ## Features
 
-This extension provides specialized syntax highlighting tailored for the different structures of ABINIT files.
+### Input files (`.abi`, `.in`, `.inc`)
+
+- **Every ABINIT input variable** (1400+), taken from the official ABINIT sources: abinit, anaddb, optic,
+  multibinit, aim and atdep, including developer and legacy variables.
+- Multi-dataset syntax: `ecut12`, `ecut?1`, `ecut1?`, series `ecut:` / `ecut+` / `ecut*`, `tsmear:?`, ...
+- Image suffixes: `acell_1img`, `xred_lastimg`; optic namelists (`&FILES`, `ddkfile_1 = '...'`).
+- Numbers in all Fortran forms (`1.0d-9`, `.5`, `5.`), repetitions (`3*1.0`), fractions (`1/3`), `sqrt(0.75)`.
+- Physical units accepted by ABINIT (`Bohr`, `Angstrom`, `Ha`, `eV`, `meV`, `Ry`, `K`, `T`, `fs`, ...).
+- Quoted strings with `$ENV` variables, unquoted paths (`xyzfile ../geo.xyz`), `include '...'`.
+- `#` and `!` comments.
+- Unknown words are left uncoloured, so a typo such as `ecutt` stands out against the highlighted variables.
+
+### Output files (`.abo`, `.log`, `.err`, `.output`, `*_EIG`, `*_DDB`, `*_DOS`, `*_PHFRQ`, `*_GW`, `*_SIGRES`)
+
+- Section titles (`== DATASET 1 ==`, `--- Iteration ...`, `---OUTPUT---`, `-outvars: ...`) and separators.
+- Echo of input variables and the memory summary, with the same colour as in input files.
+- Embedded YAML documents (`--- !ResultsGS`, `--- !DatasetInfo`, `--- !WARNING`, ...) with keys, values and
+  `message: |` blocks.
+- `ERROR`/`BUG` in red, `WARNING`s and "not converged" highlighted, "is converged" / "Calculation completed."
+  marked as success.
+- File paths, output file names (`runo_GSR.nc`), URLs, units, versions and timings.
+- Log files of the other ABINIT tools (cut3d, anaddb, ...) use the same grammar.
+
+### Structure files
+
+- XYZ (`.xyz`, also multi-frame trajectories) and VASP POSCAR/CONTCAR (`POSCAR*`, `CONTCAR*`, `.vasp`,
+  `.poscar`) including selective-dynamics flags.
+
+### Colours
+
+The grammars only use standard TextMate scopes, so every colour theme gives a consistent palette:
+
+| Element                                  | Scope                         |
+| ---------------------------------------- | ----------------------------- |
+| ABINIT variable                          | `keyword.other.variable`      |
+| Other named quantity / YAML key          | `support.type.property-name`  |
+| Number, dataset index                    | `constant.numeric`            |
+| Unit                                     | `keyword.other.unit`          |
+| String, path, file name                  | `string`                      |
+| Comment, separator line                  | `comment`                     |
+| Section title                            | `markup.heading`              |
+| Error / warning / success                | `invalid` / `markup.deleted` / `markup.inserted` |
+
+Individual colours can be changed with
+[`editor.tokenColorCustomizations`](https://code.visualstudio.com/docs/getstarted/themes#_editor-syntax-highlighting),
+e.g. `"textMateRules": [{"scope": "keyword.other.variable.abinit", "settings": {"foreground": "#4FC1FF"}}]`.
 
 ## Installation
 
@@ -13,6 +58,22 @@ This extension provides specialized syntax highlighting tailored for the differe
 3. Open VS Code and go to the **Extensions** view (`Ctrl+Shift+X` or `Cmd+Shift+X`).
 4. Click on the `...` menu in the top right corner and select **"Install from VSIX..."**.
 5. Select the downloaded `.vsix` file to install it.
+
+## Development
+
+The input and output grammars are generated; edit `tools/build_grammars.py`, not the JSON files.
+
+```sh
+npm install                  # test dependencies (vscode-textmate, vscode-oniguruma)
+npm run build                # regenerate syntaxes/abinit*.tmLanguage.json
+npm test                     # regression tests (also scans abinit_example/ if present)
+npm run update-variables     # refresh the variable list from github.com/abinit/abinit, then build
+
+node test/dump.js FILE --shapes              # show how each distinct line is tokenized
+node test/preview.js out.html FILE[:10-80]   # render with a VS Code theme (--theme dark_vs, light_plus, ...)
+
+npx @vscode/vsce package     # build the .vsix
+```
 
 ## Repository
 

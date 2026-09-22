@@ -1,8 +1,8 @@
 {
   "name": "abisyntax",
   "displayName": "ABINIT Syntax Highlighting",
-  "description": "Syntax highlighting and language support for ABINIT input and output files.",
-  "version": "1.1.4",
+  "description": "Syntax highlighting for ABINIT input files (all 1400+ variables of abinit, anaddb, optic, multibinit, aim and atdep), output/log files, and XYZ/POSCAR structures.",
+  "version": "1.2.0",
   "publisher": "weizhengqing",
   "repository": {
     "type": "git",
@@ -14,6 +14,22 @@
   "categories": [
     "Programming Languages"
   ],
+  "keywords": [
+    "abinit",
+    "dft",
+    "anaddb",
+    "syntax",
+    "highlighting"
+  ],
+  "scripts": {
+    "build": "python3 tools/build_grammars.py",
+    "update-variables": "python3 tools/fetch_variables.py && python3 tools/build_grammars.py",
+    "test": "node test/run-tests.js"
+  },
+  "devDependencies": {
+    "vscode-oniguruma": "^2.0.1",
+    "vscode-textmate": "^9.2.0"
+  },
   "contributes": {
     "languages": [
       {
@@ -41,16 +57,16 @@
           ".log",
           ".err"
         ],
-        "filenames": [
-          "DEN",
-          "GSR"
-        ],
         "filenamePatterns": [
           "*_EIG",
           "*_DDB",
-          "*_DEN",
-          "*_POT"
+          "*_DOS",
+          "*_DOS_AT*",
+          "*_PHFRQ",
+          "*_GW",
+          "*_SIGRES"
         ],
+        "firstLine": "^(\\.Version \\d+\\.\\d+\\.\\d+ of [A-Z0-9]+|\\s*ABINIT \\d+\\.\\d+\\.\\d+\\s*$)",
         "configuration": "./language-configuration.json"
       },
       {
@@ -72,8 +88,15 @@
         ],
         "extensions": [
           ".vasp",
+          ".poscar"
+        ],
+        "filenames": [
           "POSCAR",
           "CONTCAR"
+        ],
+        "filenamePatterns": [
+          "POSCAR*",
+          "CONTCAR*"
         ],
         "configuration": "./language-configuration.json"
       }
