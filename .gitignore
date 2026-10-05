@@ -3,9 +3,10 @@ out*.txt
 .vscode-test/
 node_modules/
 .DS_Store
+/examples/
+__pycache__/
 
 # Local only, not published to GitHub
 test/
-.vscodeignore
 CHANGELOG.md
 package-lock.json

@@ -1,0 +1,14 @@
+# Local calculations and development files must never enter the VSIX.
+examples/**
+abinit_example/**
+abo/**
+test/**
+tests/**
+tools/**
+node_modules/**
+package-lock.json
+.gitignore
+.vscode/**
+.vscode-test/**
+**/.DS_Store
+*.vsix

@@ -1,15 +1,18 @@
 #!/usr/bin/env python3
-"""Generate the ABINIT TextMate grammars from a single source of truth.
+"""Generate the ABINIT and Quantum ESPRESSO TextMate grammars.
 
     python3 tools/build_grammars.py
 
 Writes:
     syntaxes/abinit.tmLanguage.json         (source.abinit, input files)
     syntaxes/abinit-output.tmLanguage.json  (source.abinit-output, .abo/.log/...)
+    syntaxes/qe.tmLanguage.json             (source.qe, QE inputs)
+    syntaxes/qe-output.tmLanguage.json      (source.qe-output, QE outputs)
 
 The list of variable names comes from tools/abinit_variables.json, which is
 refreshed from the official ABINIT sources by tools/fetch_variables.py.
 Edit this file (not the generated JSON) to change the highlighting rules.
+QE rules live in tools/build_qe_grammars.py.
 
 Scope naming follows the TextMate conventions so that every theme renders a
 coherent palette:
@@ -605,3 +608,5 @@ def write(name, grammar):
 if __name__ == "__main__":
     write("abinit.tmLanguage.json", input_grammar())
     write("abinit-output.tmLanguage.json", output_grammar())
+    from build_qe_grammars import build
+    build()

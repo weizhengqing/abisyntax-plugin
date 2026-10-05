@@ -1,8 +1,8 @@
 {
   "name": "abisyntax",
-  "displayName": "ABINIT Syntax Highlighting",
-  "description": "Syntax highlighting for ABINIT input files (all 1400+ variables of abinit, anaddb, optic, multibinit, aim and atdep), output/log files, and XYZ/POSCAR structures.",
-  "version": "1.3.1",
+  "displayName": "ABINIT & Quantum ESPRESSO Syntax Highlighting",
+  "description": "Syntax highlighting for ABINIT and Quantum ESPRESSO input/output files, and XYZ/POSCAR structures.",
+  "version": "1.3.2",
   "publisher": "weizhengqing",
   "repository": {
     "type": "git",
@@ -19,12 +19,18 @@
     "dft",
     "anaddb",
     "syntax",
-    "highlighting"
+    "highlighting",
+    "quantum-espresso",
+    "qe",
+    "pwscf",
+    "xspectra"
   ],
   "scripts": {
     "build": "python3 tools/build_grammars.py",
     "update-variables": "python3 tools/fetch_variables.py && python3 tools/build_grammars.py",
-    "test": "node test/run-tests.js"
+    "test": "python3 -m unittest discover -s tests -p \"test_*.py\" && node tests/qe.test.js",
+    "test:qe": "node tests/qe.test.js",
+    "update-qe-syntax": "python3 tools/fetch_qe_syntax.py"
   },
   "devDependencies": {
     "vscode-oniguruma": "^2.0.1",
@@ -99,6 +105,34 @@
           "CONTCAR*"
         ],
         "configuration": "./language-configuration.json"
+      },
+      {
+        "id": "qe",
+        "aliases": [
+          "Quantum ESPRESSO",
+          "QE Input",
+          "qe"
+        ],
+        "extensions": [
+          ".pwi",
+          ".qei"
+        ],
+        "firstLine": "^\\s*&(?:[Aa]_[Zz][Gg]|[Bb][Aa][Nn][Dd][Ss]|[Cc][Ee][Ll][Ll]|[Cc][Oo][Nn][Tt][Rr][Oo][Ll]|[Cc][Uu][Tt]_[Oo][Cc][Cc]|[Dd][Oo][Ss]|[Dd][Yy][Nn][Aa][Mm][Ii][Cc][Ss]|[Ee][Ll][Ee][Cc][Tt][Rr][Oo][Nn][Ss]|[Ee][Nn][Ee][Rr][Gg][Yy]_[Cc][Uu][Rr][Rr][Ee][Nn][Tt]|[Ee][Nn][Ee][Rr][Gg][Yy]_[Gg][Rr][Ii][Dd]|[Ff][Cc][Pp]|[Ff][Ee][Rr][Mm][Ii]|[Hh][Aa][Mm]|[Ii][Nn][Pp][Uu][Tt]|[Ii][Nn][Pp][Uu][Tt]_[Bb][Gg][Ww]2[Pp][Ww]|[Ii][Nn][Pp][Uu][Tt]_[Mm][Aa][Nn][Ii][Pp]|[Ii][Nn][Pp][Uu][Tt]_[Nn][Aa][Mm][Ee][Ll][Ii][Ss][Tt]|[Ii][Nn][Pp][Uu][Tt]_[Pp][Ww]2[Bb][Gg][Ww]|[Ii][Nn][Pp][Uu][Tt]_[Xx][Ss][Pp][Ee][Cc][Tt][Rr][Aa]|[Ii][Nn][Pp][Uu][Tt][Aa]2[Ff]|[Ii][Nn][Pp][Uu][Tt][Bb][Ss][Ee]|[Ii][Nn][Pp][Uu][Tt][Cc][Oo][Nn][Dd]|[Ii][Nn][Pp][Uu][Tt][Ee][Pp][Ww]|[Ii][Nn][Pp][Uu][Tt][Ff][Dd]|[Ii][Nn][Pp][Uu][Tt][Gg][Ii][Pp][Aa][Ww]|[Ii][Nn][Pp][Uu][Tt][Gg][Ww][Ww]|[Ii][Nn][Pp][Uu][Tt][Hh][Pp]|[Ii][Nn][Pp][Uu][Tt][Mm][Oo][Pp][Dd][Oo][Ss]|[Ii][Nn][Pp][Uu][Tt][Pp]|[Ii][Nn][Pp][Uu][Tt][Pp][Hh]|[Ii][Nn][Pp][Uu][Tt][Pp][Pp]|[Ii][Nn][Pp][Uu][Tt][Pp][Ww]4[Gg][Ww][Ww]|[Ii][Nn][Pp][Uu][Tt][Ss][Ii][Mm][Pp][Ll][Ee]|[Ii][Nn][Pp][Uu][Tt][Ss][Ii][Mm][Pp][Ll][Ee][Ii][Pp]|[Ii][Nn][Tt][Ee][Rr][Pp][Oo][Ll][Aa][Tt][Ii][Oo][Nn]|[Ii][Oo][Nn][Ss]|[Kk][Cc][Ww]_[Pp][Pp]|[Ll][Ii][Ss][Tt]_[Nn][Aa][Mm][Ee]|[Ll][Rr]_[Cc][Oo][Nn][Tt][Rr][Oo][Ll]|[Ll][Rr]_[Dd][Aa][Vv]|[Ll][Rr]_[Ii][Nn][Pp][Uu][Tt]|[Ll][Rr]_[Pp][Oo][Ss][Tt]|[Nn][Ee][Xx][Aa][Ff][Ss]|[Oo][Ss][Cc][Dd][Ff][Tt]|[Oo][Ss][Cc][Dd][Ff][Tt]_[Ee][Tt]_[Nn][Aa][Mm][Ee][Ll][Ii][Ss][Tt]|[Oo][Ss][Cc][Dd][Ff][Tt]_[Pp][Pp]_[Nn][Aa][Mm][Ee][Ll][Ii][Ss][Tt]|[Pp][Aa][Tt][Hh]|[Pp][Hh][Oo][Nn][Oo][Nn]_[Uu][Nn][Ff][Oo][Ll][Dd]|[Pp][Ll][Oo][Tt]|[Pp][Ll][Oo][Tt]_[Rr][Aa][Pp]|[Pp][Pp]_[Dd][Ii][Ss][Cc][Aa]|[Pp][Pp][Aa][Cc][Ff]|[Pp][Rr][Ee][Ss][Ss]_[Aa][Ii]|[Pp][Rr][Oo][Jj][Ww][Ff][Cc]|[Pp][Ss][Ee][Uu][Dd][Oo][Ss]|[Rr][Ii][Ss][Mm]|[Ss][Cc][Rr][Ee][Ee][Nn]|[Ss][Tt][Rr][Ff]_[Zz][Gg]|[Ss][Yy][Ss][Tt][Ee][Mm]|[Tt][Ee][Ss][Tt]|[Vv][Ee][Rr][Bb][Aa][Tt][Ii][Mm]|[Ww][Aa][Nn][Nn][Ii][Ee][Rr]|[Ww][Aa][Nn][Nn][Ii][Ee][Rr]_[Aa][Cc]|[Xx][Pp][Ss])\\b",
+        "configuration": "./language-configuration-qe.json"
+      },
+      {
+        "id": "qe-output",
+        "aliases": [
+          "Quantum ESPRESSO Output",
+          "QE Output",
+          "qe-output"
+        ],
+        "extensions": [
+          ".pwo",
+          ".qeo"
+        ],
+        "firstLine": "^\\s*Program\\s+(?:[Aa][Ll][Ll]_[Cc][Uu][Rr][Rr][Ee][Nn][Tt][Ss]|[Aa][Ll][Pp][Hh][Aa]2[Ff]|[Aa][Vv][Ee][Rr][Aa][Gg][Ee]|[Bb][Aa][Nn][Dd][Ss]|[Bb][Aa][Nn][Dd]_[Ii][Nn][Tt][Ee][Rr][Pp][Oo][Ll][Aa][Tt][Ii][Oo][Nn]|[Bb][Gg][Ww]2[Pp][Ww]|[Bb][Ss][Ee]|[Cc][Pp]|[Cc][Pp][Pp][Pp]|[Dd]3[Hh][Ee][Ss][Ss]|[Dd][Ii][Ss][Cc][Aa]|[Dd][Ii][Ss][Cc][Aa]_[Bb][Rr][Oo][Aa][Dd][Ee][Nn][Ii][Nn][Gg]|[Dd][Oo][Ss]|[Dd][Vv][Ss][Cc][Ff]_[Qq]2[Rr]|[Dd][Yy][Nn][Mm][Aa][Tt]|[Ee][Pp][Ss][Ii][Ll][Oo][Nn]|[Ee][Pp][Ww]|[Ff][Dd]|[Ff][Dd]_[Ii][Ff][Cc]|[Ff][Dd]_[Rr][Aa][Mm][Aa][Nn]|[Ff][Ee][Rr][Mm][Ii]|[Ff][Ee][Rr][Mm][Ii]_[Pp][Rr][Oo][Jj]|[Ff][Ee][Rr][Mm][Ii]_[Vv][Ee][Ll][Oo][Cc][Ii][Tt][Yy]|[Gg][Ii][Pp][Aa][Ww]|[Gg][Ww][Ww]|[Hh][Pp]|[Ii][Nn][Ii][Tt][Ss][Tt][Aa][Tt][Ee]|[Kk][Cc][Ww]|[Kk][Cc]_[Pp][Pp]_[Ii][Nn][Tt][Ee][Rr][Pp][Oo][Ll][Aa][Tt][Ii][Oo][Nn]|[Kk][Cc]_[Pp][Pp]_[Ss][Ee][Ll][Ff]\\-[Hh][Aa][Rr][Tt][Rr][Ee][Ee]|[Ll][Dd]1|[Mm][Aa][Nn][Yy][Cc][Pp]|[Mm][Aa][Tt][Dd][Yy][Nn]|[Mm][Oo][Ll][Ee][Cc][Uu][Ll][Aa][Rr][Pp][Dd][Oo][Ss]|[Nn][Ee][Bb]|[Oo][Pp][Ee][Nn]_[Gg][Rr][Ii][Dd]|[Oo][Ss][Cc][Dd][Ff][Tt]_[Ee][Tt]|[Oo][Ss][Cc][Dd][Ff][Tt]_[Pp][Pp]|[Pp][Aa][Ww]\\-[Pp][Ll][Oo][Tt]|[Pp][Hh]|[Pp][Hh][Cc][Gg]|[Pp][Hh][Oo][Nn][Oo][Nn]|[Pp][Ii][Oo][Uu][Dd]|[Pp][Ll][Aa][Nn]\\-[Aa][Vv][Gg]|[Pp][Mm][Ww]|[Pp][Oo][Ss][Tt]\\-[Pp][Rr][Oo][Cc]|[Pp][Oo][Ss][Tt]\\-[Rr][Ii][Ss][Mm]|[Pp][Oo][Ss][Tt][Aa][Hh][Cc]|[Pp][Pp]|[Pp][Pp][Aa][Cc][Ff]|[Pp][Pp][Ee][Xx][Aa][Mm][Pp][Ll][Ee]|[Pp][Pp][Rr][Ii][Ss][Mm]|[Pp][Rr][Oo][Jj][Ww][Ff][Cc]|[Pp][Ww]|[Pp][Ww]2[Bb][Gg][Ww]|[Pp][Ww]2[Cc][Rr][Ii][Tt][Ii][Cc]|[Pp][Ww]2[Gg][Tt]|[Pp][Ww]2[Gg][Ww]|[Pp][Ww]2[Ww][Aa][Nn][Nn][Ii][Ee][Rr]|[Pp][Ww]2[Ww][Aa][Nn][Nn][Ii][Ee][Rr]90|[Pp][Ww]4[Gg][Ww][Ww]|[Pp][Ww][Cc][Oo][Nn][Dd]|[Pp][Ww][Ss][Cc][Ff]|[Qq]2[Qq][Ss][Tt][Aa][Rr]|[Qq]2[Rr]|[Qq][Ee][Hh][Ee][Aa][Tt]|[Rr][Ii][Ss][Mm]1[Dd]|[Ss][Ii][Mm][Pp][Ll][Ee]|[Ss][Ii][Mm][Pp][Ll][Ee]_[Bb][Ss][Ee]|[Ss][Ii][Mm][Pp][Ll][Ee]_[Ii][Pp]|[Ss][Pp][Ff][Nn]_[Bb][Rr][Oo][Aa][Dd]|[Tt][Dd][Dd][Ff][Pp][Tt]_[Pp][Pp]|[Tt][Uu][Rr][Bb][Oo][Ee][Ee][Ll][Ss]|[Tt][Uu][Rr][Bb][Oo][Mm][Aa][Gg][Nn][Oo][Nn]|[Tt][Uu][Rr][Bb][Oo][Tt][Dd][Dd][Ff][Tt]|[Tt][Uu][Rr][Bb][Oo]_[Dd][Aa][Vv][Ii][Dd][Ss][Oo][Nn]|[Tt][Uu][Rr][Bb][Oo]_[Ee][Ee][Ll][Ss]|[Tt][Uu][Rr][Bb][Oo]_[Ll][Aa][Nn][Cc][Zz][Oo][Ss]|[Tt][Uu][Rr][Bb][Oo]_[Mm][Aa][Gg][Nn][Oo][Nn]|[Tt][Uu][Rr][Bb][Oo]_[Ss][Pp][Ee][Cc][Tt][Rr][Uu][Mm]|[Uu][Pp][Ss]|[Ww][Aa][Nn][Nn][Ii][Ee][Rr]2[Pp][Ww]|[Ww][Aa][Nn][Nn][Ii][Ee][Rr]_[Hh][Aa][Mm]|[Ww][Aa][Nn][Nn][Ii][Ee][Rr]_[Pp][Ll][Oo][Tt]|[Ww][Ff][Cc][Kk]2[Rr]|[Xx][Ss][Pp][Ee][Cc][Tt][Rr][Aa]|[Zz][Gg])\\s+v\\.[\\d.]+",
+        "configuration": "./language-configuration-output.json"
       }
     ],
     "grammars": [
@@ -121,7 +155,31 @@
         "language": "abinit-vasp",
         "scopeName": "source.vasp",
         "path": "./syntaxes/abinit-vasp.tmLanguage.json"
+      },
+      {
+        "language": "qe",
+        "scopeName": "source.qe",
+        "path": "./syntaxes/qe.tmLanguage.json"
+      },
+      {
+        "language": "qe-output",
+        "scopeName": "source.qe-output",
+        "path": "./syntaxes/qe-output.tmLanguage.json"
       }
-    ]
-  }
+    ],
+    "configuration": {
+      "title": "ABISyntax",
+      "properties": {
+        "abisyntax.detectQuantumEspresso": {
+          "type": "boolean",
+          "default": true,
+          "description": "Detect Quantum ESPRESSO content when opening .in, .inp, .inc, .nml, .dat, .out, .output, .log and .err files. Explicit files.associations and manual language choices take precedence."
+        }
+      }
+    }
+  },
+  "main": "./extension.js",
+  "activationEvents": [
+    "onStartupFinished"
+  ]
 }
