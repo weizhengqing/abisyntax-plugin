@@ -23,6 +23,9 @@
     },
     {
       "include": "#values"
+    },
+    {
+      "include": "#fallback"
     }
   ],
   "repository": {
@@ -72,13 +75,13 @@
       "patterns": [
         {
           "match": "(?i)^\\s*(?:&end\\b|/)|&end\\b",
-          "name": "punctuation.definition.namelist.end.qe"
+          "name": "punctuation.definition.namelist.end.qe keyword.other.namelist-end.qe"
         },
         {
           "match": "^\\s*(&)([A-Za-z_]\\w*)",
           "captures": {
             "1": {
-              "name": "punctuation.definition.namelist.qe"
+              "name": "punctuation.definition.namelist.qe storage.type.namelist.marker.qe"
             },
             "2": {
               "name": "storage.type.namelist.qe"
@@ -99,7 +102,7 @@
         },
         {
           "match": "(?i)\\b(?:alat|bohr|angstrom|crystal_sg|crystal_b|crystal_c|crystal|tpiba_b|tpiba_c|tpiba|automatic|gamma|atomic|ortho-atomic|norm-atomic|wf|pseudo)\\b",
-          "name": "support.constant.option.qe"
+          "name": "support.constant.option.qe constant.language.option.qe"
         },
         {
           "match": "(?i)^\\s*(?:U|J0|J|V|B|E2|E3|ALPHA)\\b(?![ \\t]*(?:\\([^()\\r\\n]*\\)[ \\t]*)?=)",
@@ -122,7 +125,7 @@
           ]
         },
         "4": {
-          "name": "keyword.operator.assignment.qe"
+          "name": "keyword.operator.assignment.qe keyword.other.operator.assignment.qe"
         }
       }
     },
@@ -158,19 +161,31 @@
         },
         {
           "match": "=",
-          "name": "keyword.operator.assignment.qe"
+          "name": "keyword.operator.assignment.qe keyword.other.operator.assignment.qe"
         },
         {
           "match": "(?i)\\.(?:and|or|not|eqv|neqv|eq|ne|lt|le|gt|ge)\\.|[*/:+<>-]",
-          "name": "keyword.operator.qe"
+          "name": "keyword.operator.qe keyword.other.operator.qe"
         },
         {
           "match": ",",
-          "name": "punctuation.separator.qe"
+          "name": "punctuation.separator.qe keyword.other.separator.qe"
         },
         {
           "match": "[(){}\\[\\]]",
-          "name": "punctuation.section.qe"
+          "name": "punctuation.section.qe keyword.other.group.qe"
+        }
+      ]
+    },
+    "fallback": {
+      "patterns": [
+        {
+          "match": "[A-Za-z_][\\w.+%-]*",
+          "name": "support.type.property-name.bare.qe"
+        },
+        {
+          "match": "\\S",
+          "name": "punctuation.other.qe keyword.other.symbol.qe"
         }
       ]
     }

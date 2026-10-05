@@ -11,16 +11,27 @@ const catalog = require('../qe-syntax-data.json');
 const root = path.resolve(__dirname, '..');
 let checks = 0;
 
-function tokenize(grammar, text) {
+function tokenize(grammar, text, retain = true) {
   let stack = textmate.INITIAL;
-  return text.split(/\r?\n/).map(line => {
+  const retained = [];
+  for (const line of text.split(/\r?\n/)) {
     const result = grammar.tokenizeLine(line, stack);
     stack = result.ruleStack;
     assert(!result.stoppedEarly, 'tokenization timed out');
-    return result.tokens.map(token => ({
+    const tokens = result.tokens.map(token => ({
       text: line.slice(token.startIndex, token.endIndex), scopes: token.scopes,
     }));
-  });
+    if (tokens[0]?.scopes[0] === 'source.qe' || tokens[0]?.scopes[0] === 'source.qe-output') {
+      for (const token of tokens) {
+        if (token.text.trim() && !token.scopes.slice(1).some(scope =>
+          /^(?:keyword|storage|constant|support|entity|variable|string|comment|markup|invalid)\./.test(scope))) {
+          assert.fail(`Unscoped visible token: ${JSON.stringify(token)}`);
+        }
+      }
+    }
+    if (retain) retained.push(tokens);
+  }
+  return retained;
 }
 
 function expect(grammar, line, text, scope, context = '') {
@@ -111,12 +122,34 @@ async function main() {
   expect(output, '!    total energy = -123.456789 Ry', 'Ry', 'keyword.other.unit');
   expect(output, ' the Fermi energy is 8.7641 ev', 'the Fermi energy is', 'keyword.other.energy');
   expect(output, '     iteration # 12 ecut=45.0 Ry', 'iteration # 12', 'markup.heading');
-  expect(output, ' WARNING: variable ef_r is obsolete', 'WARNING', 'invalid.illegal');
+  expect(output, ' WARNING: variable ef_r is obsolete', 'WARNING', 'markup.deleted.warning');
   expect(output, ' convergence NOT achieved after 100 iterations', 'convergence NOT achieved', 'invalid.illegal');
   expect(output, ' convergence has been achieved in 12 iterations', 'convergence has been achieved', 'markup.inserted');
   expect(output, ' JOB DONE.', 'JOB DONE.', 'markup.inserted');
   expect(output, ' bad input data', 'bad input data', 'invalid.illegal', ' %%%%%%%%%%%%\n Error in routine read_namelists (1)');
   expect(output, ' -100.25 Ry', '-100.25', 'constant.numeric', ' %%%%%%%%%%%%\n Error in routine read_namelists (1)\n %%%%%%%%%%%%');
+  // Screenshot regressions: semantic coverage, including text and symbols.
+  expect(input, 'ATOMIC_POSITIONS crystal', 'crystal', 'constant.language.option');
+  expect(input, ' celldm(1) = 30.86131988', '=', 'keyword.other.operator');
+  expect(input, ' celldm(1) = 30.86131988', '(', 'keyword.other.group');
+  expect(output, ' This program is part of the open-source Quantum ESPRESSO suite', 'This', 'comment.line.note');
+  expect(output, ' Generated using ATOMPAW code', 'ATOMPAW', 'comment.line.note');
+  expect(output, ' /beegfs-home/users/user/calc/mp-149/pseudo/Si.ground.UPF', '/beegfs-home/users/user/calc/mp-149/pseudo/Si.ground.UPF', 'string.unquoted.path');
+  expect(output, ' MD5 check sum: 29db7f4633594bd997459ec8b07a2523', '29db7f4633594bd997459ec8b07a2523', 'constant.numeric.hash');
+  expect(output, ' Parallelization info', 'Parallelization info', 'markup.heading');
+  expect(output, '   Cartesian axes', 'Cartesian axes', 'markup.heading');
+  expect(output, '     site n.     atom                  positions (alat units)', 'positions', 'markup.heading.table');
+  expect(output, '         1        Sih    tau(   1) = (   0.0000000   0.0000000   0.0000000  )', 'Sih', 'constant.language.species');
+  expect(output, '         1        Sih    tau(   1) = (   0.0000000   0.0000000   0.0000000  )', 'tau', 'support.type.property-name');
+  expect(output, '         1        Sih    tau(   1) = (   0.0000000   0.0000000   0.0000000  )', '=', 'keyword.other.operator');
+  expect(output, ' Pseudo is Projector augmented-wave + core cor, Zval = 4.0', 'Zval', 'support.type.property-name');
+  expect(output, ' file Si.Lhole.zv5.UPF: wavefunction(s) 3S 0S renormalized', 'Si.Lhole.zv5.UPF', 'string.unquoted.filename');
+  expect(output, ' file Si.Lhole.zv5.UPF: wavefunction(s) 3S 0S renormalized', '3S', 'constant.language.orbital');
+  expect(output, '  init_us_2 : 2.24s CPU 2.26s WALL (51 calls)', '2.24s', 'constant.numeric.time');
+  expect(output, '  Program PWSCF v.7.5 starts on 4Jul2026 at 21:17:37', '4Jul2026', 'constant.numeric.date');
+  expect(output, '  Program PWSCF v.7.5 starts on 4Jul2026 at 21:17:37', '21:17:37', 'constant.numeric.time');
+  expect(output, ' http://www.quantum-espresso.org/quote', 'http://www.quantum-espresso.org/quote', 'string.unquoted.url');
+  expect(output, ' Note: floating-point exceptions are signalling: IEEE_INVALID_FLAG', 'IEEE_INVALID_FLAG', 'markup.deleted.warning');
 
   for (const [text, language] of [
     ['\uFEFF\n! comment\n &CONTROL\n calculation="scf"\n/', 'qe'],
@@ -175,7 +208,7 @@ async function main() {
       if (file.endsWith('.in')) assert.equal(language, 'qe', `undetected input: ${file}`);
       if (!language) continue; // Build logs and unrelated reports aren't QE output.
       const grammar = language === 'qe' ? input : output;
-      const tokens = tokenize(grammar, text);
+      const tokens = tokenize(grammar, text, language === 'qe');
       if (language === 'qe') {
         inputs++;
         for (const [index, line] of text.split(/\r?\n/).entries()) {
@@ -190,6 +223,7 @@ async function main() {
         }
       } else if (file.endsWith('.log')) logs++;
       else outputs++;
+      if ((inputs + outputs + logs) % 100 === 0) console.log(`Checked ${inputs + outputs + logs} local QE files`);
     }
   }
   let upstreamInputs = 0;

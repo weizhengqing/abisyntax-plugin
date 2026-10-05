@@ -10,6 +10,13 @@ A Visual Studio Code extension that adds syntax highlighting for [ABINIT](https:
 - QE outputs: program headers, energies, iterations, values and units,
   convergence, warnings, errors and `JOB DONE.`
 
+QE output prose uses a secondary text colour; headings, table columns, species,
+paths, filenames, checksums, dates, timings, values and diagnostics have distinct
+scopes. Input card options and punctuation are coloured by the syntax theme.
+QE input/output bracket-pair colours are disabled so they do not override those
+scopes. Unknown words and symbols receive a fallback scope rather than becoming
+uncoloured gaps; this is lexical highlighting, not a complete semantic parser.
+
 ## Quantum ESPRESSO
 
 QE uses the same `.in` extension as ABINIT. When a file is opened, the extension
@@ -71,6 +78,20 @@ outputs; these calculations are not needed for tests in a clean checkout.
 Tests also check every catalog parameter (plain and indexed, lower and upper
 case), every namelist and named card, all program banners, and the official QE
 source examples when the locally downloaded sources are available.
+
+Every non-whitespace token in the QE fixtures and local examples must have a
+colour-bearing scope. The screenshot regression tests cover prose, file paths,
+MD5 checksums, coordinate tables, card options, operators and brackets.
+
+To check resolved colours in VS Code's built-in dark/light themes, run:
+
+```sh
+npm run test:colors
+```
+
+On macOS this uses the installed VS Code themes. Elsewhere pass
+`-- --theme-dir /path/to/VSCode/extensions/theme-defaults/themes`. To compare
+against an earlier implementation, add `-- --baseline COMMIT_OR_TAG`.
 
 To refresh the catalog from a downloaded QE source tree:
 

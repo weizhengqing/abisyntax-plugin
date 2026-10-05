@@ -10,7 +10,13 @@
       "include": "#banner"
     },
     {
+      "include": "#number-row"
+    },
+    {
       "include": "#sections"
+    },
+    {
+      "include": "#table"
     },
     {
       "include": "#energy"
@@ -22,7 +28,7 @@
       "include": "#input"
     },
     {
-      "include": "#values"
+      "include": "#text"
     }
   ],
   "repository": {
@@ -34,8 +40,12 @@
           "name": "invalid.illegal.error.qe-output"
         },
         {
-          "match": "(?i)^.*(?:Error in routine|convergence NOT achieved|Maximum CPU time exceeded|\\b(?:warning|error|fatal)\\b).*$",
+          "match": "(?i)^.*(?:Error in routine|convergence NOT achieved|Maximum CPU time exceeded|\\b(?:error|fatal)\\b).*$",
           "name": "invalid.illegal.diagnostic.qe-output"
+        },
+        {
+          "match": "(?i)^.*(?:\\bwarning\\b|floating-point exceptions).*$",
+          "name": "markup.deleted.warning.qe-output"
         },
         {
           "match": "(?i)^.*(?:JOB DONE\\.|convergence has been achieved|End of self-consistent calculation).*$",
@@ -51,18 +61,54 @@
         },
         "2": {
           "name": "constant.numeric.version.qe-output"
+        },
+        "3": {
+          "patterns": [
+            {
+              "include": "#text"
+            }
+          ]
         }
       }
+    },
+    "number-row": {
+      "match": "^\\s*[-+\\d.][\\d.eEdD+\\-\\s]*\\s*$",
+      "name": "constant.numeric.row.qe-output"
     },
     "sections": {
       "patterns": [
         {
-          "match": "^\\s*[-=]{5,}\\s*$",
+          "match": "^\\s*[=+|]?[-=*_]{5,}[=+|]?\\s*$",
           "name": "comment.line.separator.qe-output"
         },
         {
-          "match": "(?i)^\\s*(?:Self-consistent Calculation|Band Structure Calculation|iteration #\\s*\\d+.*|Forces acting on atoms.*|total\\s+stress.*|Begin final coordinates|End final coordinates|crystal axes:.*|reciprocal axes:.*|atomic species\\s+valence.*|\\S.*bands \\(ev\\):.*)\\s*$",
-          "name": "markup.heading.section.qe-output"
+          "match": "(?i)^\\s*(Self-consistent Calculation|Band Structure Calculation|iteration #\\s*\\d+.*|Forces acting on atoms.*|total\\s+stress.*|Begin final coordinates|End final coordinates|(?:crystal|reciprocal|Cartesian) axes:?.*|Parallelization info|Using Slab Decomposition|(?:General|Parallel|PAW) routines|(?:Reading|Getting|Starting|Attributing|Energy zero) [A-Za-z][^=:]*|\\S.*bands \\(ev\\):.*)\\s*$",
+          "captures": {
+            "1": {
+              "name": "markup.heading.section.qe-output",
+              "patterns": [
+                {
+                  "include": "#inline"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "table": {
+      "patterns": [
+        {
+          "match": "(?i)^\\s*(?:atomic species\\s+valence.*|site n\\.\\s+atom\\s+positions.*|sticks:\\s+dense.*|atom\\s+type\\s+.*|(?:energy|omega|frequency)\\s+.*(?:sigma|cross|dos).*)$",
+          "name": "markup.heading.table.qe-output"
+        },
+        {
+          "match": "^\\s*(Min|Max|Sum)(?=\\s+[-+.\\d])",
+          "captures": {
+            "1": {
+              "name": "support.type.property-name.qe-output"
+            }
+          }
         }
       ]
     },
@@ -73,18 +119,30 @@
           "name": "keyword.other.energy.qe-output"
         },
         "2": {
-          "name": "keyword.operator.assignment.qe-output"
+          "name": "keyword.operator.assignment.qe-output keyword.other.operator.qe-output"
         }
       }
     },
     "labels": {
-      "match": "^\\s*([A-Za-z][\\w /().,\\[\\]-]*?)\\s*([=:])",
+      "match": "(?i)^\\s*(?!Pseudo is\\b|This\\b|(?:URL\\s+)?https?://)([A-Za-z][\\w /().,\\[\\]#%+*:-]*?)\\s*([=:])(?!//)(?=\\s|$)(.*)$",
       "captures": {
         "1": {
-          "name": "support.type.property-name.qe-output"
+          "name": "support.type.property-name.qe-output",
+          "patterns": [
+            {
+              "include": "#label-content"
+            }
+          ]
         },
         "2": {
-          "name": "keyword.operator.assignment.qe-output"
+          "name": "keyword.operator.qe-output keyword.other.operator.qe-output"
+        },
+        "3": {
+          "patterns": [
+            {
+              "include": "#text"
+            }
+          ]
         }
       }
     },
@@ -97,25 +155,224 @@
               "name": "keyword.control.card.qe"
             }
           }
-        },
-        {
-          "include": "source.qe#assignment"
         }
       ]
+    },
+    "inline": {
+      "patterns": [
+        {
+          "include": "#url"
+        },
+        {
+          "include": "#path"
+        },
+        {
+          "include": "#filename"
+        },
+        {
+          "include": "#quoted-string"
+        },
+        {
+          "include": "#checksum"
+        },
+        {
+          "include": "#time"
+        },
+        {
+          "include": "#assignment"
+        },
+        {
+          "include": "#species"
+        },
+        {
+          "include": "#orbitals"
+        },
+        {
+          "include": "#prose-variable"
+        },
+        {
+          "include": "#units"
+        },
+        {
+          "include": "#values"
+        },
+        {
+          "include": "#symbols"
+        }
+      ]
+    },
+    "label-content": {
+      "patterns": [
+        {
+          "include": "#url"
+        },
+        {
+          "include": "#path"
+        },
+        {
+          "include": "#filename"
+        },
+        {
+          "include": "#checksum"
+        },
+        {
+          "include": "#units"
+        },
+        {
+          "include": "#values"
+        }
+      ]
+    },
+    "assignment": {
+      "match": "\\b([A-Za-z_]\\w*(?:[%/:]\\w+)*)(\\s*(?:\\([^()\\n]*\\)|\\[[^\\[\\]\\n]*\\])*)(\\s*)(=)(?![=>])",
+      "captures": {
+        "1": {
+          "name": "support.type.property-name.qe-output"
+        },
+        "2": {
+          "name": "support.type.property-name.qe-output",
+          "patterns": [
+            {
+              "include": "#values"
+            }
+          ]
+        },
+        "4": {
+          "name": "keyword.operator.qe-output keyword.other.operator.qe-output"
+        }
+      }
+    },
+    "url": {
+      "match": "https?://[^\\s\\x22\\x27<>]+",
+      "name": "markup.underline.link.qe-output string.unquoted.url.qe-output"
+    },
+    "path": {
+      "match": "(?<![\\w])(?:\\.{1,2}/|~/|/[\\w.])[\\w./+@~%=-]*",
+      "name": "string.unquoted.path.qe-output"
+    },
+    "filename": {
+      "match": "(?i)(?<![\\w/])[-\\w.+@]+\\.(?:upf|wfc|in|inp|out|log|dat|xml|save|sav|xsf|cube|h5|hdf5|gnu|eig|xanes|nml|json|txt)(?!\\w)(?:/[^\\s\\x22\\x27,;()<>]*)?",
+      "name": "string.unquoted.filename.qe-output"
+    },
+    "quoted-string": {
+      "match": "\"[^\"\\n]*\"|\\x27[^\\x27\\n]*\\x27",
+      "name": "string.quoted.qe-output"
+    },
+    "checksum": {
+      "match": "(?<!\\w)[0-9a-fA-F]{32}(?:[0-9a-fA-F]{32})?(?!\\w)",
+      "name": "constant.numeric.hash.qe-output"
+    },
+    "time": {
+      "patterns": [
+        {
+          "match": "\\b\\d{1,2}\\s*(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\\s*\\d{4}\\b",
+          "name": "constant.numeric.date.qe-output"
+        },
+        {
+          "match": "\\b\\d{1,2}:\\s*\\d{1,2}:\\s*\\d{1,2}(?:\\.\\d+)?\\b",
+          "name": "constant.numeric.time.qe-output"
+        },
+        {
+          "match": "(?<![\\w.])(?:\\d+h)?(?:\\d+m)?\\d+(?:\\.\\d+)?s\\b",
+          "name": "constant.numeric.time.qe-output"
+        }
+      ]
+    },
+    "species": {
+      "patterns": [
+        {
+          "match": "^\\s*(?:(\\d+)\\s+)?((?:A[cglmrstu]|B[aehikr]?|C[adeflmnorsu]?|D[bsy]|E[rsu]|F[elmr]?|G[ade]|H[efgos]?|I[nr]?|Kr?|L[airuv]|M[cdgnot]|N[abdehiop]?|O[gs]?|P[abdmortu]?|R[abefghnu]|S[bcegimnr]?|T[abcehilms]|U|V|W|Xe|Yb?|Z[nr])[\\w+-]*)(?=\\s+(?:[-+.\\d]|tau\\b))",
+          "captures": {
+            "1": {
+              "name": "constant.numeric.index.qe-output"
+            },
+            "2": {
+              "name": "constant.language.species.qe-output"
+            }
+          }
+        },
+        {
+          "match": "(?<!\\w)(?:A[cglmrstu]|B[aehikr]?|C[adeflmnorsu]?|D[bsy]|E[rsu]|F[elmr]?|G[ade]|H[efgos]?|I[nr]?|Kr?|L[airuv]|M[cdgnot]|N[abdehiop]?|O[gs]?|P[abdmortu]?|R[abefghnu]|S[bcegimnr]?|T[abcehilms]|U|V|W|Xe|Yb?|Z[nr])(?=\\s*\\()",
+          "name": "constant.language.element.qe-output"
+        }
+      ]
+    },
+    "orbitals": {
+      "match": "(?i)(?<!\\w)\\d+[spdfghij](?!\\w)",
+      "name": "constant.language.orbital.qe-output"
+    },
+    "prose-variable": {
+      "match": "(?<![\\w./-])(?:[A-Za-z_]\\w*_\\w+|npool|nbgrp|nimage|ntypx|lmaxx|npk|Zval)(?![\\w./-])",
+      "name": "support.type.property-name.qe-output"
+    },
+    "units": {
+      "match": "(?i)(?<!\\w)(?:Ry|eV|Ha|a\\.u\\.|bohrs?|angstroms?|kbar|GPa|THz|cm-1|[KMGT]i?B|CPU|GPU|WALL|seconds?|minutes?|hours?|alat)(?!\\w)",
+      "name": "keyword.other.unit.qe-output"
     },
     "values": {
       "patterns": [
         {
-          "match": "(?<![\\w.])[-+]?(?:\\d+\\.?\\d*|\\.\\d+)(?:[eEdD][-+]?\\d+)?(?![\\w.])",
+          "match": "(?<![\\w.])[-+]?(?:\\d+\\.\\d*[eEdD][-+]?\\d+|\\d+\\.\\d+|\\.\\d+|\\d+)(?:[eEdD][-+]?\\d+)?(?![\\w.])",
           "name": "constant.numeric.qe-output"
-        },
-        {
-          "match": "(?i)(?<!\\w)(?:Ry|eV|Ha|a\\.u\\.|bohr|angstrom|kbar|GPa|THz|cm-1|CPU|WALL)(?!\\w)",
-          "name": "keyword.other.unit.qe-output"
         },
         {
           "match": "(?i)\\b(?:TRUE|FALSE)\\b",
           "name": "constant.language.boolean.qe-output"
+        }
+      ]
+    },
+    "symbols": {
+      "match": "[=+*/<>|:&%#^~-]|[(){}\\[\\],;]",
+      "name": "punctuation.other.qe-output keyword.other.symbol.qe-output"
+    },
+    "text": {
+      "patterns": [
+        {
+          "include": "#url"
+        },
+        {
+          "include": "#path"
+        },
+        {
+          "include": "#filename"
+        },
+        {
+          "include": "#quoted-string"
+        },
+        {
+          "include": "#checksum"
+        },
+        {
+          "include": "#time"
+        },
+        {
+          "include": "#assignment"
+        },
+        {
+          "include": "#species"
+        },
+        {
+          "include": "#orbitals"
+        },
+        {
+          "include": "#prose-variable"
+        },
+        {
+          "include": "#units"
+        },
+        {
+          "include": "#values"
+        },
+        {
+          "include": "#symbols"
+        },
+        {
+          "match": "[A-Za-z_][\\w.\\x27+-]*|\\d+[A-Za-z_][\\w.+-]*",
+          "name": "comment.line.note.qe-output"
+        },
+        {
+          "match": "\\S",
+          "name": "comment.line.note.qe-output punctuation.other.qe-output"
         }
       ]
     }

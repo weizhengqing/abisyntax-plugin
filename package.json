@@ -2,7 +2,7 @@
   "name": "abisyntax",
   "displayName": "ABINIT & Quantum ESPRESSO Syntax Highlighting",
   "description": "Syntax highlighting for ABINIT and Quantum ESPRESSO input/output files, and XYZ/POSCAR structures.",
-  "version": "1.3.2",
+  "version": "1.3.3",
   "publisher": "weizhengqing",
   "repository": {
     "type": "git",
@@ -30,7 +30,8 @@
     "update-variables": "python3 tools/fetch_variables.py && python3 tools/build_grammars.py",
     "test": "python3 -m unittest discover -s tests -p \"test_*.py\" && node tests/qe.test.js",
     "test:qe": "node tests/qe.test.js",
-    "update-qe-syntax": "python3 tools/fetch_qe_syntax.py"
+    "update-qe-syntax": "python3 tools/fetch_qe_syntax.py",
+    "test:colors": "node tools/check_qe_colors.js"
   },
   "devDependencies": {
     "vscode-oniguruma": "^2.0.1",
