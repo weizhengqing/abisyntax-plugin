@@ -1,111 +1,28 @@
-# ABINIT & Quantum ESPRESSO Syntax Highlighting
+# ABINIT, Quantum ESPRESSO & VASP Syntax Highlighting
 
-A Visual Studio Code extension that adds syntax highlighting for [ABINIT](https://www.abinit.org/) and [Quantum ESPRESSO](https://www.quantum-espresso.org/) files:
+A Visual Studio Code extension for highlighting input, output and structure files
+used by ABINIT, Quantum ESPRESSO and VASP.
 
-- Input files: `.abi`, `.in`, `.inc`
-- Output and log files: `.abo`, `.log`, `.err`, `.output`, `*_EIG`, `*_DDB`, `*_DOS`, ...
-- Structure files: `.xyz`, POSCAR / CONTCAR
-- QE inputs: namelists, parameter assignments (including array indices), Fortran
-  numbers and booleans, strings, comments, structure cards, species and UPF filenames.
-- QE outputs: program headers, energies, iterations, values and units,
-  convergence, warnings, errors and `JOB DONE.`
+## Supported files
 
-QE output prose uses a secondary text colour; headings, table columns, species,
-paths, filenames, checksums, dates, timings, values and diagnostics have distinct
-scopes. Input card options and punctuation are coloured by the syntax theme.
-QE input/output bracket-pair colours are disabled so they do not override those
-scopes. Unknown words and symbols receive a fallback scope rather than becoming
-uncoloured gaps; this is lexical highlighting, not a complete semantic parser.
+| Software / format | Common files |
+| --- | --- |
+| ABINIT | `.abi`, `.in`, `.inc`, `.abo`, `.output`, `.log`, `.err`, `*_EIG`, `*_DDB`, `*_DOS` |
+| Quantum ESPRESSO | `.in`, `.inp`, `.inc`, `.nml`, `.dat`, `.pwi`, `.qei`, `.out`, `.output`, `.pwo`, `.qeo`, `.log`, `.err` |
+| VASP | `INCAR`, `STOPCAR`, `KPOINTS`, `IBZKPT`, `POTCAR`, `POSCAR`, `CONTCAR`, `OUTCAR`, `OSZICAR`, `ICONST`, `vasprun.xml` |
+| VASP text data | `CHG`, `CHGCAR`, `DOSCAR`, `EIGENVAL`, `PROCAR`, `LOCPOT`, `ELFCAR`, `PARCHG`, `XDATCAR`, `REPORT`, and related files |
+| Structure formats | `.xyz`, `.vasp`, `.poscar` |
 
-## Quantum ESPRESSO
+Supports parameter names, numbers, strings, comments, structures, energies and
+calculation diagnostics. Common VASP filename variants such as `INCAR.relax`
+and `OUTCAR.1` are also recognized.
 
-QE uses the same `.in` extension as ABINIT. When a file is opened, the extension
-checks its first 64 KiB for a QE namelist or program banner and selects
-**Quantum ESPRESSO** or **Quantum ESPRESSO Output**. Leading blank lines, comments
-and titles are supported. Content detection covers `.in`, `.inp`, `.inc`, `.out`,
-`.output`, `.log`, `.err`, `.nml` and `.dat`; `.pwi` / `.qei` and `.pwo` / `.qeo` select the QE
-input and output modes directly.
-
-The syntax catalog is extracted from the official [QE 7.6 source release](https://github.com/QEF/q-e/releases/tag/qe-7.6):
-36 input documentation files and actual Fortran namelist declarations, plus the
-GIPAW revision pinned by that release. It covers **64 namelists, 1,979 parameter
-names, and 32 named cards**, including PWscf, CP, PHonon, NEB, HP, EPW, TDDFPT,
-XSpectra, KCW, GWW, GIPAW and postprocessing utilities.
-
-Parameter assignments are also highlighted generically, including indexed arrays
-and derived-type parameters such as `ggwin%max_i`, so new or external parameters
-do not need a catalog update to receive highlighting. Atomic orbital labels and
-Hubbard parameters are supported. This extension does not validate variable names
-or input correctness. Nameless utilities and external add-ons without a recognized
-QE header can use the language selected manually in the status bar.
-
-For a file without a recognizable header, select the language using the VS Code
-status bar. New content is detected when the file is reopened. Explicit
-`files.associations` settings and manual language selections take precedence.
-To disable content detection, set `abisyntax.detectQuantumEspresso` to `false`.
-For projects containing only QE files, an optional workspace setting is:
-
-```json
-"files.associations": {
-  "*.in": "qe",
-  "*.out": "qe-output"
-}
-```
-
-`examples/` is local only: Git ignores it and VSIX packaging excludes it.
+Files are detected automatically where possible. If needed, select the language
+from the VS Code status bar. Highlighting does not validate calculation settings.
 
 ## Installation
 
-1. Open VS Code and go to the **Extensions** view (`Ctrl+Shift+X` or `Cmd+Shift+X`).
-2. Search for **ABINIT Syntax Highlighting** (publisher `weizhengqing`).
-3. Click **Install**.
+In VS Code, run **Extensions: Install from VSIX...**, select the `.vsix` package,
+and reload the window when prompted.
 
-For a locally built version, run **Extensions: Install from VSIX...** and select
-the generated `.vsix` file, then reload VS Code when prompted.
-
-## Development
-
-```sh
-npm install
-npm run build
-npm test
-```
-
-The tests use VS Code's TextMate / Oniguruma tokenizer. If `examples/qe_examples/calc`
-exists locally, they also verify detection and tokenization of its QE inputs and
-outputs; these calculations are not needed for tests in a clean checkout.
-
-Tests also check every catalog parameter (plain and indexed, lower and upper
-case), every namelist and named card, all program banners, and the official QE
-source examples when the locally downloaded sources are available.
-
-Every non-whitespace token in the QE fixtures and local examples must have a
-colour-bearing scope. The screenshot regression tests cover prose, file paths,
-MD5 checksums, coordinate tables, card options, operators and brackets.
-
-To check resolved colours in VS Code's built-in dark/light themes, run:
-
-```sh
-npm run test:colors
-```
-
-On macOS this uses the installed VS Code themes. Elsewhere pass
-`-- --theme-dir /path/to/VSCode/extensions/theme-defaults/themes`. To compare
-against an earlier implementation, add `-- --baseline COMMIT_OR_TAG`.
-
-To refresh the catalog from a downloaded QE source tree:
-
-```sh
-python3 tools/fetch_qe_syntax.py --source /path/to/qe --ref qe-7.6
-npm run build
-npm test
-```
-
-Add `--gipaw-source /path/to/qe-gipaw` to include that optional module. The
-generated `qe-syntax-data.json` records source paths and the release reference;
-`--archive /path/to/qe-7.6.tar.gz` also records the archive checksum. The extension
-uses the bundled catalog offline and does not download QE at runtime.
-
-## Repository
-
-[https://github.com/weizhengqing/abisyntax-plugin](https://github.com/weizhengqing/abisyntax-plugin)
+[GitHub repository](https://github.com/weizhengqing/abisyntax-plugin)

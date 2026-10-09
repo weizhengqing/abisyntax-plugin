@@ -1,12 +1,35 @@
+# Publish only extension runtime files and repository/packaging metadata.
+/*
+!/.gitignore
+!/.vscodeignore
+!/README.md
+!/package.json
+!/extension.js
+!/qe-detection.js
+!/vasp-detection.js
+!/qe-syntax-data.json
+!/vasp-syntax-data.json
+!/language-configuration*.json
+!/syntaxes/
+/syntaxes/*
+!/syntaxes/*.tmLanguage.json
+
+# Local development, calculations and downloaded source/potential data.
+/test/
+/tests/
+/tools/
+/examples/
+/node_modules/
+/.vscode/
+/.vscode-test/
+/.codex/
+/.agents/
+/.aws/
+
+# Local artifacts and caches.
 *.vsix
 out*.txt
-.vscode-test/
-node_modules/
-.DS_Store
-/examples/
 __pycache__/
-
-# Local only, not published to GitHub
-test/
-CHANGELOG.md
-package-lock.json
+.DS_Store
+/CHANGELOG.md
+/package-lock.json

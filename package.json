@@ -1,8 +1,8 @@
 {
   "name": "abisyntax",
-  "displayName": "ABINIT & Quantum ESPRESSO Syntax Highlighting",
-  "description": "Syntax highlighting for ABINIT and Quantum ESPRESSO input/output files, and XYZ/POSCAR structures.",
-  "version": "1.3.3",
+  "displayName": "ABINIT, Quantum ESPRESSO & VASP Syntax Highlighting",
+  "description": "Syntax highlighting for ABINIT, Quantum ESPRESSO and VASP inputs, outputs, structures and text data.",
+  "version": "1.3.6",
   "publisher": "weizhengqing",
   "repository": {
     "type": "git",
@@ -23,20 +23,12 @@
     "quantum-espresso",
     "qe",
     "pwscf",
-    "xspectra"
+    "xspectra",
+    "vasp",
+    "incar",
+    "outcar",
+    "poscar"
   ],
-  "scripts": {
-    "build": "python3 tools/build_grammars.py",
-    "update-variables": "python3 tools/fetch_variables.py && python3 tools/build_grammars.py",
-    "test": "python3 -m unittest discover -s tests -p \"test_*.py\" && node tests/qe.test.js",
-    "test:qe": "node tests/qe.test.js",
-    "update-qe-syntax": "python3 tools/fetch_qe_syntax.py",
-    "test:colors": "node tools/check_qe_colors.js"
-  },
-  "devDependencies": {
-    "vscode-oniguruma": "^2.0.1",
-    "vscode-textmate": "^9.2.0"
-  },
   "contributes": {
     "languages": [
       {
@@ -90,6 +82,8 @@
       {
         "id": "abinit-vasp",
         "aliases": [
+          "VASP POSCAR / CONTCAR",
+          "VASP Structure",
           "ABINIT VASP",
           "vasp"
         ],
@@ -105,7 +99,7 @@
           "POSCAR*",
           "CONTCAR*"
         ],
-        "configuration": "./language-configuration.json"
+        "configuration": "./language-configuration-vasp.json"
       },
       {
         "id": "qe",
@@ -134,6 +128,168 @@
         ],
         "firstLine": "^\\s*Program\\s+(?:[Aa][Ll][Ll]_[Cc][Uu][Rr][Rr][Ee][Nn][Tt][Ss]|[Aa][Ll][Pp][Hh][Aa]2[Ff]|[Aa][Vv][Ee][Rr][Aa][Gg][Ee]|[Bb][Aa][Nn][Dd][Ss]|[Bb][Aa][Nn][Dd]_[Ii][Nn][Tt][Ee][Rr][Pp][Oo][Ll][Aa][Tt][Ii][Oo][Nn]|[Bb][Gg][Ww]2[Pp][Ww]|[Bb][Ss][Ee]|[Cc][Pp]|[Cc][Pp][Pp][Pp]|[Dd]3[Hh][Ee][Ss][Ss]|[Dd][Ii][Ss][Cc][Aa]|[Dd][Ii][Ss][Cc][Aa]_[Bb][Rr][Oo][Aa][Dd][Ee][Nn][Ii][Nn][Gg]|[Dd][Oo][Ss]|[Dd][Vv][Ss][Cc][Ff]_[Qq]2[Rr]|[Dd][Yy][Nn][Mm][Aa][Tt]|[Ee][Pp][Ss][Ii][Ll][Oo][Nn]|[Ee][Pp][Ww]|[Ff][Dd]|[Ff][Dd]_[Ii][Ff][Cc]|[Ff][Dd]_[Rr][Aa][Mm][Aa][Nn]|[Ff][Ee][Rr][Mm][Ii]|[Ff][Ee][Rr][Mm][Ii]_[Pp][Rr][Oo][Jj]|[Ff][Ee][Rr][Mm][Ii]_[Vv][Ee][Ll][Oo][Cc][Ii][Tt][Yy]|[Gg][Ii][Pp][Aa][Ww]|[Gg][Ww][Ww]|[Hh][Pp]|[Ii][Nn][Ii][Tt][Ss][Tt][Aa][Tt][Ee]|[Kk][Cc][Ww]|[Kk][Cc]_[Pp][Pp]_[Ii][Nn][Tt][Ee][Rr][Pp][Oo][Ll][Aa][Tt][Ii][Oo][Nn]|[Kk][Cc]_[Pp][Pp]_[Ss][Ee][Ll][Ff]\\-[Hh][Aa][Rr][Tt][Rr][Ee][Ee]|[Ll][Dd]1|[Mm][Aa][Nn][Yy][Cc][Pp]|[Mm][Aa][Tt][Dd][Yy][Nn]|[Mm][Oo][Ll][Ee][Cc][Uu][Ll][Aa][Rr][Pp][Dd][Oo][Ss]|[Nn][Ee][Bb]|[Oo][Pp][Ee][Nn]_[Gg][Rr][Ii][Dd]|[Oo][Ss][Cc][Dd][Ff][Tt]_[Ee][Tt]|[Oo][Ss][Cc][Dd][Ff][Tt]_[Pp][Pp]|[Pp][Aa][Ww]\\-[Pp][Ll][Oo][Tt]|[Pp][Hh]|[Pp][Hh][Cc][Gg]|[Pp][Hh][Oo][Nn][Oo][Nn]|[Pp][Ii][Oo][Uu][Dd]|[Pp][Ll][Aa][Nn]\\-[Aa][Vv][Gg]|[Pp][Mm][Ww]|[Pp][Oo][Ss][Tt]\\-[Pp][Rr][Oo][Cc]|[Pp][Oo][Ss][Tt]\\-[Rr][Ii][Ss][Mm]|[Pp][Oo][Ss][Tt][Aa][Hh][Cc]|[Pp][Pp]|[Pp][Pp][Aa][Cc][Ff]|[Pp][Pp][Ee][Xx][Aa][Mm][Pp][Ll][Ee]|[Pp][Pp][Rr][Ii][Ss][Mm]|[Pp][Rr][Oo][Jj][Ww][Ff][Cc]|[Pp][Ww]|[Pp][Ww]2[Bb][Gg][Ww]|[Pp][Ww]2[Cc][Rr][Ii][Tt][Ii][Cc]|[Pp][Ww]2[Gg][Tt]|[Pp][Ww]2[Gg][Ww]|[Pp][Ww]2[Ww][Aa][Nn][Nn][Ii][Ee][Rr]|[Pp][Ww]2[Ww][Aa][Nn][Nn][Ii][Ee][Rr]90|[Pp][Ww]4[Gg][Ww][Ww]|[Pp][Ww][Cc][Oo][Nn][Dd]|[Pp][Ww][Ss][Cc][Ff]|[Qq]2[Qq][Ss][Tt][Aa][Rr]|[Qq]2[Rr]|[Qq][Ee][Hh][Ee][Aa][Tt]|[Rr][Ii][Ss][Mm]1[Dd]|[Ss][Ii][Mm][Pp][Ll][Ee]|[Ss][Ii][Mm][Pp][Ll][Ee]_[Bb][Ss][Ee]|[Ss][Ii][Mm][Pp][Ll][Ee]_[Ii][Pp]|[Ss][Pp][Ff][Nn]_[Bb][Rr][Oo][Aa][Dd]|[Tt][Dd][Dd][Ff][Pp][Tt]_[Pp][Pp]|[Tt][Uu][Rr][Bb][Oo][Ee][Ee][Ll][Ss]|[Tt][Uu][Rr][Bb][Oo][Mm][Aa][Gg][Nn][Oo][Nn]|[Tt][Uu][Rr][Bb][Oo][Tt][Dd][Dd][Ff][Tt]|[Tt][Uu][Rr][Bb][Oo]_[Dd][Aa][Vv][Ii][Dd][Ss][Oo][Nn]|[Tt][Uu][Rr][Bb][Oo]_[Ee][Ee][Ll][Ss]|[Tt][Uu][Rr][Bb][Oo]_[Ll][Aa][Nn][Cc][Zz][Oo][Ss]|[Tt][Uu][Rr][Bb][Oo]_[Mm][Aa][Gg][Nn][Oo][Nn]|[Tt][Uu][Rr][Bb][Oo]_[Ss][Pp][Ee][Cc][Tt][Rr][Uu][Mm]|[Uu][Pp][Ss]|[Ww][Aa][Nn][Nn][Ii][Ee][Rr]2[Pp][Ww]|[Ww][Aa][Nn][Nn][Ii][Ee][Rr]_[Hh][Aa][Mm]|[Ww][Aa][Nn][Nn][Ii][Ee][Rr]_[Pp][Ll][Oo][Tt]|[Ww][Ff][Cc][Kk]2[Rr]|[Xx][Ss][Pp][Ee][Cc][Tt][Rr][Aa]|[Zz][Gg])\\s+v\\.[\\d.]+",
         "configuration": "./language-configuration-output.json"
+      },
+      {
+        "id": "vasp-input",
+        "aliases": [
+          "VASP INCAR",
+          "vasp-input",
+          "VASP STOPCAR"
+        ],
+        "filenames": [
+          "INCAR",
+          "STOPCAR"
+        ],
+        "filenamePatterns": [
+          "INCAR.*",
+          "INCAR_*",
+          "STOPCAR.*",
+          "STOPCAR_*"
+        ],
+        "configuration": "./language-configuration-vasp.json",
+        "extensions": [
+          ".incar"
+        ]
+      },
+      {
+        "id": "vasp-kpoints",
+        "aliases": [
+          "VASP KPOINTS",
+          "vasp-kpoints"
+        ],
+        "filenames": [
+          "KPOINTS",
+          "IBZKPT"
+        ],
+        "filenamePatterns": [
+          "KPOINTS*",
+          "IBZKPT*"
+        ],
+        "configuration": "./language-configuration-vasp.json",
+        "extensions": [
+          ".kpoints"
+        ]
+      },
+      {
+        "id": "vasp-potcar",
+        "aliases": [
+          "VASP POTCAR",
+          "vasp-potcar"
+        ],
+        "filenames": [
+          "POTCAR"
+        ],
+        "filenamePatterns": [
+          "POTCAR*"
+        ],
+        "configuration": "./language-configuration-vasp.json",
+        "extensions": [
+          ".potcar"
+        ]
+      },
+      {
+        "id": "vasp-output",
+        "aliases": [
+          "VASP Output",
+          "vasp-output"
+        ],
+        "filenames": [
+          "OUTCAR",
+          "OSZICAR",
+          "REPORT",
+          "vasp.out",
+          "vasp.log",
+          "ML_LOGFILE"
+        ],
+        "filenamePatterns": [
+          "OUTCAR*",
+          "OSZICAR*",
+          "REPORT.*",
+          "ML_LOGFILE*"
+        ],
+        "configuration": "./language-configuration-vasp.json",
+        "extensions": [
+          ".vout",
+          ".vaspout"
+        ],
+        "firstLine": "^\\s*vasp\\.\\d+\\.\\d+"
+      },
+      {
+        "id": "vasp-data",
+        "aliases": [
+          "VASP Text Data",
+          "vasp-data"
+        ],
+        "filenames": [
+          "CHG",
+          "CHGCAR",
+          "LOCPOT",
+          "ELFCAR",
+          "PARCHG",
+          "DOSCAR",
+          "EIGENVAL",
+          "PROCAR",
+          "PROOUT",
+          "PRJCAR",
+          "PCDAT",
+          "XDATCAR",
+          "DYNMAT",
+          "DYNMATFULL",
+          "BSEFATBAND",
+          "PENALTYPOT",
+          "IRCCAR",
+          "ML_AB",
+          "ML_ABN",
+          "ML_FF",
+          "ML_FFN",
+          "ML_EATOM",
+          "ML_HEAT",
+          "ML_HIS",
+          "ML_REG"
+        ],
+        "filenamePatterns": [
+          "CHGCAR*",
+          "LOCPOT*",
+          "ELFCAR*",
+          "PARCHG*",
+          "DOSCAR*",
+          "EIGENVAL*",
+          "PROCAR*",
+          "XDATCAR*",
+          "ML_AB.*",
+          "ML_ABN.*",
+          "ML_FF.*",
+          "ML_FFN.*"
+        ],
+        "configuration": "./language-configuration-vasp.json"
+      },
+      {
+        "id": "vasp-iconst",
+        "aliases": [
+          "VASP ICONST",
+          "vasp-iconst"
+        ],
+        "filenames": [
+          "ICONST"
+        ],
+        "filenamePatterns": [
+          "ICONST.*"
+        ],
+        "configuration": "./language-configuration-vasp.json"
+      },
+      {
+        "id": "vasp-xml",
+        "aliases": [
+          "VASP XML",
+          "vasp-xml"
+        ],
+        "filenames": [
+          "vasprun.xml"
+        ],
+        "filenamePatterns": [
+          "vasprun.xml.*"
+        ],
+        "configuration": "./language-configuration-vasp-xml.json"
       }
     ],
     "grammars": [
@@ -166,6 +322,41 @@
         "language": "qe-output",
         "scopeName": "source.qe-output",
         "path": "./syntaxes/qe-output.tmLanguage.json"
+      },
+      {
+        "language": "vasp-input",
+        "scopeName": "source.vasp-input",
+        "path": "./syntaxes/vasp-input.tmLanguage.json"
+      },
+      {
+        "language": "vasp-kpoints",
+        "scopeName": "source.vasp-kpoints",
+        "path": "./syntaxes/vasp-kpoints.tmLanguage.json"
+      },
+      {
+        "language": "vasp-potcar",
+        "scopeName": "source.vasp-potcar",
+        "path": "./syntaxes/vasp-potcar.tmLanguage.json"
+      },
+      {
+        "language": "vasp-output",
+        "scopeName": "source.vasp-output",
+        "path": "./syntaxes/vasp-output.tmLanguage.json"
+      },
+      {
+        "language": "vasp-data",
+        "scopeName": "source.vasp-data",
+        "path": "./syntaxes/vasp-data.tmLanguage.json"
+      },
+      {
+        "language": "vasp-iconst",
+        "scopeName": "source.vasp-iconst",
+        "path": "./syntaxes/vasp-iconst.tmLanguage.json"
+      },
+      {
+        "language": "vasp-xml",
+        "scopeName": "text.xml.vasp",
+        "path": "./syntaxes/vasp-xml.tmLanguage.json"
       }
     ],
     "configuration": {
@@ -175,6 +366,11 @@
           "type": "boolean",
           "default": true,
           "description": "Detect Quantum ESPRESSO content when opening .in, .inp, .inc, .nml, .dat, .out, .output, .log and .err files. Explicit files.associations and manual language choices take precedence."
+        },
+        "abisyntax.detectVasp": {
+          "type": "boolean",
+          "default": true,
+          "description": "Detect VASP INCAR assignments or output banners in shared text extensions. Explicit files.associations and manual language choices take precedence."
         }
       }
     }
